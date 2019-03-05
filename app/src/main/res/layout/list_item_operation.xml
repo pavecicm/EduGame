@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/newOperationItem"
+        android:layout_margin="@dimen/spacing_0.5x"
+        style="@style/NewOperationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:background="@color/gray"
+        android:layout_marginLeft="@dimen/spacing_3x"
+        android:layout_marginRight="@dimen/spacing_3x"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+</LinearLayout>

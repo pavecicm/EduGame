@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow">
+
+    <ScrollView
+        android:id="@+id/newWordScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/newWordContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:minHeight="@dimen/spacing_10x"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/spacing_2x"
+            android:paddingEnd="@dimen/spacing_2x"
+            android:paddingBottom="@dimen/spacing_2x"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/newWord"
+        style="@style/NewWordText"
+        android:layout_width="wrap_content"
+        android:layout_height="73dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="NOVA RIJEČ"
+        />
+
+    <TextView
+        android:id="@+id/destroyBtn"
+        style="@style/DeleteButton"
+        android:layout_width="@dimen/spacing_6x"
+        android:layout_height="@dimen/spacing_6x"
+        android:layout_margin="@dimen/spacing_1x"
+        android:gravity="center"
+        android:text="@string/close_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/saveBtn"
+        app:layout_constraintTop_toBottomOf="@id/newWordScroll"
+        tools:text="X"/>
+
+    <ImageView
+        android:id="@+id/saveBtn"
+        android:layout_width="@dimen/spacing_6x"
+        android:layout_height="@dimen/spacing_6x"
+        android:layout_margin="@dimen/spacing_1x"
+        android:gravity="center"
+        android:src="@drawable/ic_file_upload_green"
+        app:layout_constraintLeft_toRightOf="@id/destroyBtn"
+        app:layout_constraintRight_toLeftOf="@id/deleteBtn"
+        app:layout_constraintTop_toBottomOf="@id/newWordScroll"/>
+
+    <ImageView
+        android:id="@+id/deleteBtn"
+        android:layout_width="@dimen/spacing_6x"
+        android:layout_height="@dimen/spacing_6x"
+        android:layout_margin="@dimen/spacing_1x"
+        android:gravity="center"
+        android:src="@drawable/ic_backspace_red"
+        app:layout_constraintLeft_toRightOf="@id/saveBtn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newWordScroll"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lettersList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:foregroundGravity="center"
+        android:minHeight="@dimen/spacing_12x"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/spacing_2x"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/saveBtn"/>
+
+</android.support.constraint.ConstraintLayout>

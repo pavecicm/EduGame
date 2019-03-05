@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Edu Game</string>
+    <string name="app_title">Odaberi brojke ili slova i zaigraj igru</string>
+    <string name="numbers">Brojevi</string>
+    <string name="letters">Slova</string>
+    <string name="about_title">O aplikaciji</string>
+    <string name="settings">Postavke</string>
+    <string name="about_text">...</string>
+    <string name="close_text">X</string>
+    <string name="save_text">✔</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="times">*</string>
+    <string name="divide">/</string>
+    <string name="reset">Poništi</string>
+    <string name="enter_all_data">Molimo unesite oba operanda te operaciju kako bi mogli izračunati novi broj!</string>
+    <string name="congrats">Bravo, osvojili ste %s bodova</string>
+</resources>
