@@ -64,6 +64,8 @@ dependencies {
 
     // firebase
     implementation "com.google.firebase:firebase-core:$firebase"
+    implementation "com.google.firebase:firebase-auth:$firebase"
+    implementation "com.google.firebase:firebase-database:$firebase"
 
     // other
     implementation "com.jakewharton.threetenabp:threetenabp:$threeTenAndroidVersion"

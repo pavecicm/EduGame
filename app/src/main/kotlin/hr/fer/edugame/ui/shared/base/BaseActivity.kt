@@ -1,8 +1,6 @@
 package hr.fer.edugame.ui.shared.base
 
-import android.content.Context
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
@@ -20,8 +18,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     protected abstract fun providePresenter(): BasePresenter?
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(layoutRes)
         setupToolbar()
     }

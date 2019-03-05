@@ -1,7 +1,10 @@
 package hr.fer.edugame.ui
 
+import android.content.Context
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
+import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.replaceFragment
 import hr.fer.edugame.ui.home.HomeFragment
 import hr.fer.edugame.ui.home.info.InfoFragment
@@ -16,12 +19,19 @@ private const val BACK_STACK_ROOT_TAG = "root_fragment"
 
 class MainActivity : BaseActivity(), HomeListener {
 
+    companion object {
+        const val EXTRA_USER = "EXTRA_USER"
+
+        fun newInstance(context: Context, currentUser: FirebaseUser) = context.intentFor<MainActivity>(
+            EXTRA_USER to currentUser
+        )
+    }
+
     override val layoutRes: Int = R.layout.activity_main
     override fun providePresenter(): BasePresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         replaceFragment(HomeFragment.newInstance(), R.id.fragmentContainer)
     }
 

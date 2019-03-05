@@ -15,4 +15,7 @@
     <string name="reset">Poništi</string>
     <string name="enter_all_data">Molimo unesite oba operanda te operaciju kako bi mogli izračunati novi broj!</string>
     <string name="congrats">Bravo, osvojili ste %s bodova</string>
+    <string name="enter_email">Unesite email</string>
+    <string name="enter_password">Unesite password</string>
+    <string name="login">Prijavi se</string>
 </resources>

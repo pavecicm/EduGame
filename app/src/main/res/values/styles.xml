@@ -99,4 +99,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="EnterEditText">
+        <item name="android:layout_marginStart">@dimen/spacing_2x</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_2x</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">@dimen/spacing_1x</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>
