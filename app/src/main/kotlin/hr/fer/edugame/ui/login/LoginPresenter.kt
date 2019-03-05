@@ -21,14 +21,32 @@ class LoginPresenter @Inject constructor(
     }
 
     fun loginToFirebase(activity: LoginActivity, email: String, password: String) {
-        if(email.isNotEmpty() && password.isNotEmpty())
+        if(email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        var currentUser = auth.currentUser
+                        if (currentUser != null) {
+//                        myRef.child("Users").child(currentUser.email.toString().splitEmail()).child("Request").setValue(currentUser.uid)
+                        }
+                        currentUser?.let {
+                            view.navigateToHome(it)
+                        }
+                    } else {
+                        createUser(activity, email, password)
+                    }
+                }
+        }
+    }
+
+    fun createUser(activity: LoginActivity, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
                     var currentUser = auth.currentUser
-                    if (currentUser != null) {
-                        myRef.child("Users").child(currentUser.email.toString().splitEmail()).child("Request").setValue(currentUser.uid)
-                    }
+//                    if (currentUser != null) {
+//                        myRef.child("Users").child(currentUser.email.toString().splitEmail()).child("Request").setValue(currentUser.uid)
+//                    }
                     currentUser?.let {
                         view.navigateToHome(it)
                     }
@@ -36,5 +54,23 @@ class LoginPresenter @Inject constructor(
                     view.showAuthFailed()
                 }
             }
+    }
+
+    fun continueAsAnonymous() {
+        auth
+            .signInAnonymously()
+            .addOnCompleteListener{task ->
+                if (task.isSuccessful) {
+                    var currentUser = auth.currentUser
+//                    if (currentUser != null) {
+//                        myRef.child("Users").child(currentUser.email.toString().splitEmail()).child("Request").setValue(currentUser.uid)
+//                    }
+                    currentUser?.let {
+                        view.navigateToHome(it)
+                    }
+                } else {
+                    view.showAuthFailed()
+                }
+        }
     }
 }

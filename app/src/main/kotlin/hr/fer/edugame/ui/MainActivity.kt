@@ -2,6 +2,7 @@ package hr.fer.edugame.ui
 
 import android.content.Context
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
@@ -55,14 +56,9 @@ class MainActivity : BaseActivity(), HomeListener {
         )
     }
 
-    override fun onNavigateToSettings() {
-        replaceFragment(
-            SettingsFragment.newInstance(),
-            R.id.fragmentContainer,
-            addToBackStack = true,
-            rootTag = BACK_STACK_ROOT_TAG,
-            popBackStack = true
-        )
+    override fun onLogout() {
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     override fun onNavigateToInfo() {

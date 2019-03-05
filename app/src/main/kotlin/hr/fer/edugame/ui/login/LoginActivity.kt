@@ -8,6 +8,7 @@ import hr.fer.edugame.extensions.setThrottlingClickListener
 import hr.fer.edugame.ui.MainActivity
 import hr.fer.edugame.ui.shared.base.BaseActivity
 import hr.fer.edugame.ui.shared.base.BasePresenter
+import kotlinx.android.synthetic.main.activity_login.anonymous
 import kotlinx.android.synthetic.main.activity_login.email
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.password
@@ -38,6 +39,9 @@ class LoginActivity : BaseActivity(), LoginView {
     fun initUI() {
         loginBtn.setThrottlingClickListener {
             presenter.loginToFirebase(this, email.text.toString(), password.text.toString())
+        }
+        anonymous.setThrottlingClickListener {
+            presenter.continueAsAnonymous()
         }
     }
 
