@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment(), HomeView {
             homeListener.onNavigateToInfo()
         }
         logoutBtn.setThrottlingClickListener {
-            homeListener.onLogout()
+            presenter.logout()
         }
         numbersButton.setThrottlingClickListener {
             homeListener.onNavigateToNumbers()
@@ -55,4 +55,10 @@ class HomeFragment : BaseFragment(), HomeView {
             homeListener.onNavigateToLetters()
         }
     }
+
+    override fun logout() {
+        homeListener.onLogout()
+    }
+
+
 }

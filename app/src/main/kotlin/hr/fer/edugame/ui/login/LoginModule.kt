@@ -2,8 +2,9 @@ package hr.fer.edugame.ui.login
 
 import dagger.Binds
 import dagger.Module
+import hr.fer.edugame.di.modules.FirebaseModule
 
-@Module
+@Module(includes = [FirebaseModule::class])
 abstract class LoginModule {
 
     @Binds

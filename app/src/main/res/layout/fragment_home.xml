@@ -47,6 +47,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+
+
+    <TextView
+        android:text="@string/invite_others"
+        style="@style/PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/numbersButton"
+        android:layout_marginBottom="@dimen/spacing_3.5x"/>
+
     <TextView
         android:id="@+id/numbersButton"
         style="@style/PrimaryButton"

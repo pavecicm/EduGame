@@ -57,7 +57,6 @@ class MainActivity : BaseActivity(), HomeListener {
     }
 
     override fun onLogout() {
-        FirebaseAuth.getInstance().signOut()
         finish()
     }
 

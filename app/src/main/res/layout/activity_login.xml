@@ -21,6 +21,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <TextView
+        android:layout_marginTop="@dimen/spacing_3x"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:text="@string/enter_google_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <EditText
         android:id="@+id/email"
         style="@style/EnterEditText"
@@ -28,7 +36,7 @@
         android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@id/appTitle"
         app:layout_constraintBottom_toTopOf="@id/password"
-        android:layout_marginTop="@dimen/spacing_9x"
+        android:layout_marginTop="@dimen/spacing_6x"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
