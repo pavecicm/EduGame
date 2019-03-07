@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow">
@@ -47,15 +48,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
-
     <TextView
-        android:text="@string/invite_others"
+        android:id="@+id/findOpponent"
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_3.5x"
+        android:text="@string/invite_others"
         app:layout_constraintBottom_toTopOf="@id/numbersButton"
-        android:layout_marginBottom="@dimen/spacing_3.5x"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="16dp"/>
 
     <TextView
         android:id="@+id/numbersButton"

@@ -9,3 +9,7 @@ inline fun <reified T: Any> Context.intentFor(params: Pair<String, FirebaseUser>
         putExtra(params.first, params.second)
     }
 }
+
+inline fun <reified T: Any> Context.intentFor(): Intent {
+    return Intent(this, T::class.java)
+}

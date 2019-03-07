@@ -12,6 +12,8 @@ import hr.fer.edugame.ui.login.LoginActivity
 import hr.fer.edugame.ui.login.LoginModule
 import hr.fer.edugame.ui.numbers.NumbersFragment
 import hr.fer.edugame.ui.numbers.NumbersModule
+import hr.fer.edugame.ui.search.SearchUserActivity
+import hr.fer.edugame.ui.search.SearchUserModule
 import hr.fer.edugame.ui.settings.SettingsFragment
 import hr.fer.edugame.ui.settings.SettingsModule
 
@@ -23,6 +25,9 @@ abstract class DiBuilder {
 
     @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity
+
+    @ContributesAndroidInjector(modules = [SearchUserModule::class])
+    abstract fun bindSearchUserActivity(): SearchUserActivity
 
     @ContributesAndroidInjector(modules = [HomeModule::class])
     abstract fun bindHomeFragment(): HomeFragment

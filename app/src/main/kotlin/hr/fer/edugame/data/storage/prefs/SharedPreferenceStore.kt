@@ -9,6 +9,18 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
 
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
+    override var currentUserID: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_USER] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_USER] = value
+        }
+
+    override var email: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] = value
+        }
+
     override fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     operator fun SharedPreferences.set(key: String, value: Any?) {

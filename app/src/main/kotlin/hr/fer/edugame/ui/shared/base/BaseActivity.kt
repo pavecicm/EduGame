@@ -51,4 +51,12 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
     override fun showLevelCompleted() {
         Toast.makeText(this, String.format(getString(R.string.congrats), 45), Toast.LENGTH_SHORT).show()
     }
+
+    override fun showProgress() {
+
+    }
+
+    override fun hideProgress() {
+
+    }
 }

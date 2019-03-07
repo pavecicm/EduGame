@@ -35,4 +35,10 @@ abstract class BaseFragment : DaggerFragment(), BaseView {
     override fun hideKeyboard() = baseActivity.hideKeyboard()
 
     override fun showLevelCompleted() = baseActivity.showLevelCompleted()
+
+    override fun showProgress() {
+    }
+
+    override fun hideProgress() {
+    }
 }

@@ -21,4 +21,7 @@
     <string name="anonymous"><u>Igraj kao gost</u></string>
     <string name="enter_google_account">Ulogirajte se pomoću google računa! Unesite email i password!</string>
     <string name="invite_others">Pozovi protivnika</string>
+    <string name="invite_message">Korisnik %s vas je pozvao da zaigrate protiv njega!</string>
+    <string name="cancel">Odustani</string>
+    <string name="ok">U redu</string>
 </resources>
