@@ -27,7 +27,7 @@ class SearchOpponentInteractor @Inject constructor(
     fun removeUser(uid: String) {
         usersOnlineChildRef.child(uid).removeValue()
     }
-
+ß
     fun searchForOpponent(presenter: SearchUserPresenter, user: User) {
         usersOnlineChildRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -48,12 +48,18 @@ class SearchOpponentInteractor @Inject constructor(
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
+                removeGameRoom(user.id, p0.key ?: "")
                 presenter.removeOpponent(p0.key ?: "")
             }
 
             override fun onCancelled(p0: DatabaseError) {
             }
         })
+    }
+
+    fun removeGameRoom(currentUid: String, opponentUid: String) {
+        val gameRoomChild = currentUid + "_" + opponentUid
+        gamesChildRef.child(gameRoomChild).removeValue()
     }
 
     fun createCurrentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
@@ -80,6 +86,7 @@ class SearchOpponentInteractor @Inject constructor(
                 }
 
                 override fun onChildRemoved(p0: DataSnapshot) {
+                    removeGameRoom(currentUid, opponentUid)
                     presenter.removeOpponent(p0.key ?: "")
                 }
 
@@ -106,6 +113,7 @@ class SearchOpponentInteractor @Inject constructor(
                 }
 
                 override fun onChildRemoved(p0: DataSnapshot) {
+                    removeGameRoom(currentUid, opponentUid)
                     presenter.removeOpponent(p0.key ?: "")
                 }
 
