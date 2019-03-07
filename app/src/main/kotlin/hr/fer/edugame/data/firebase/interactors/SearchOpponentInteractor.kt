@@ -27,7 +27,7 @@ class SearchOpponentInteractor @Inject constructor(
     fun removeUser(uid: String) {
         usersOnlineChildRef.child(uid).removeValue()
     }
-ß
+
     fun searchForOpponent(presenter: SearchUserPresenter, user: User) {
         usersOnlineChildRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
