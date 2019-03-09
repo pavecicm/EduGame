@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment(), HomeView {
             homeListener.onNavigateToLetters()
         }
         findOpponent.setThrottlingClickListener {
-            startActivity(SearchUserActivity.newInstance(requireContext()))
+            homeListener.onNavigateToSearch()
         }
     }
 

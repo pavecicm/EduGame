@@ -19,6 +19,7 @@ class SearchOpponentInteractor @Inject constructor(
     private val usersOnlineChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_USERS_ONLINE_CHILD)
     private val gamesChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_GAMES_CHILD)
     private var opponentFound: Boolean = false
+    private var shouldWaitForCall: Boolean = true
 
     fun addUser(user: User) {
         usersOnlineChildRef.child(user.id).setValue(user)
@@ -48,7 +49,7 @@ class SearchOpponentInteractor @Inject constructor(
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
-                removeGameRoom(user.id, p0.key ?: "")
+//                removeGameRoom(user.id, p0.key ?: "")
                 presenter.removeOpponent(p0.key ?: "")
             }
 
@@ -65,21 +66,22 @@ class SearchOpponentInteractor @Inject constructor(
     fun createCurrentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = currentUid + "_" + opponentUid
         gamesChildRef.child(gameRoomChild).push().setValue(true)
-        listenForOpponentGameRoom(presenter, currentUid, opponentUid)
+//        listenForOpponentGameRoom(presenter, currentUid, opponentUid)
     }
 
     fun listenForOpponentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = opponentUid + "_" + currentUid
+        shouldWaitForCall = false
         gamesChildRef.child(gameRoomChild)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                    if (dataSnapshot.value == true) {
+                        removeUser(currentUid)
+                        presenter.startGameAsInitiator()
+                    }
                 }
 
                 override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                    if (p0.value != null) {
-                        removeUser(currentUid)
-                        presenter.startGame()
-                    }
                 }
 
                 override fun onChildMoved(p0: DataSnapshot, p1: String?) {
@@ -87,7 +89,7 @@ class SearchOpponentInteractor @Inject constructor(
 
                 override fun onChildRemoved(p0: DataSnapshot) {
                     removeGameRoom(currentUid, opponentUid)
-                    presenter.removeOpponent(p0.key ?: "")
+                    presenter.removeOpponent(opponentUid)
                 }
 
                 override fun onCancelled(p0: DatabaseError) {
@@ -100,8 +102,8 @@ class SearchOpponentInteractor @Inject constructor(
         gamesChildRef.child(gameRoomChild)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    if (dataSnapshot.value != null) {
-                        presenter.showCall(dataSnapshot.key ?: "")
+                    if (dataSnapshot.value != null && shouldWaitForCall) {
+                        presenter.showCall(opponentUid)
                     }
                 }
 
@@ -114,7 +116,7 @@ class SearchOpponentInteractor @Inject constructor(
 
                 override fun onChildRemoved(p0: DataSnapshot) {
                     removeGameRoom(currentUid, opponentUid)
-                    presenter.removeOpponent(p0.key ?: "")
+                    presenter.removeOpponent(opponentUid)
                 }
 
                 override fun onCancelled(p0: DatabaseError) {

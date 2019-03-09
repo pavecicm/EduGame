@@ -1,20 +1,17 @@
 package hr.fer.edugame.ui.search
 
-import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
 import hr.fer.edugame.data.firebase.interactors.SearchOpponentInteractor
 import hr.fer.edugame.data.models.User
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.shared.base.BasePresenter
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class SearchUserPresenter @Inject constructor(
     override val view: SearchUserView,
     private val searchOpponentInteractor: SearchOpponentInteractor,
     private val preferenceStore: PreferenceStore
-): BasePresenter(view) {
+) : BasePresenter(view) {
 
-    private lateinit var weakView: WeakReference<SearchUserView>
     private lateinit var opponent: User
     private lateinit var currentUser: User
 
@@ -28,7 +25,7 @@ class SearchUserPresenter @Inject constructor(
 
     fun searchForOpponent(user: User) = searchOpponentInteractor.searchForOpponent(this, user)
 
-    fun addOpponentInList(opponent: User)  {
+    fun addOpponentInList(opponent: User) {
         this.opponent = opponent
         view.addOpponentFoundView(opponent.id, opponent.email)
     }
@@ -37,7 +34,13 @@ class SearchUserPresenter @Inject constructor(
         view.removeOpponnent(id)
     }
 
+    fun startGameAsInitiator() {
+        preferenceStore.isInitiator = true
+        startGame()
+    }
+
     fun startGame() {
+        preferenceStore.opponentId = opponent.id
         view.navigateToGameActivity(opponent)
     }
 
@@ -59,7 +62,7 @@ class SearchUserPresenter @Inject constructor(
         searchOpponentInteractor.listenForOpponentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
     }
 
-    fun showCall(id: String){
+    fun showCall(id: String) {
         view.showGameRequestDialog(id)
     }
 
@@ -67,5 +70,9 @@ class SearchUserPresenter @Inject constructor(
         searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.removeUser(id)
         startGame()
+    }
+
+    fun declineCall(id: String) {
+        searchOpponentInteractor.removeGameRoom(preferenceStore.currentUserID, id)
     }
 }

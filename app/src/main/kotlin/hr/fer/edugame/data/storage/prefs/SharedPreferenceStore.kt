@@ -15,6 +15,18 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
             sharedPreferences[PreferenceStore.Constants.KEY_USER] = value
         }
 
+    override var opponentId: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_OPPONENT] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_OPPONENT] = value
+        }
+
+    override var isInitiator: Boolean
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_INITIATOR] ?: false
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_INITIATOR] = value
+        }
+
     override var email: String
         get() = sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] ?: ""
         set(value) {

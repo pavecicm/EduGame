@@ -1,10 +1,9 @@
 package hr.fer.edugame.ui.search
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import hr.fer.edugame.R
 import hr.fer.edugame.data.models.User
 import hr.fer.edugame.extensions.intentFor
@@ -51,7 +50,7 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
     }
 
     override fun navigateToGameActivity(opponent: User) {
-        val request: RequestQueue = Volley.newRequestQueue(this)
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
@@ -66,8 +65,8 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
     override fun showGameRequestDialog(id: String) {
         AlertDialog.Builder(this)
             .setMessage(R.string.invite_message)
-            .setPositiveButton(R.string.ok, { _, _ -> presenter.acceptCall(id)})
-            .setNegativeButton(String.format(getString(R.string.cancel), id), null)
+            .setPositiveButton(R.string.ok) { _, _ -> presenter.acceptCall(id) }
+            .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
             .show()
     }
 }
