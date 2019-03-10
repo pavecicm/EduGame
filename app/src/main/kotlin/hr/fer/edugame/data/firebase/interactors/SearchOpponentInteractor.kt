@@ -18,7 +18,7 @@ class SearchOpponentInteractor @Inject constructor(
 
     private val usersOnlineChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_USERS_ONLINE_CHILD)
     private val gamesChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_GAMES_CHILD)
-    private var opponentFound: Boolean = false
+//    private var opponentFound: Boolean = false
     private var shouldWaitForCall: Boolean = true
 
     fun addUser(user: User) {
@@ -34,7 +34,6 @@ class SearchOpponentInteractor @Inject constructor(
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val opponentUid = dataSnapshot.key
                 if (user.id != opponentUid) {
-                    opponentFound = true
                     val opponent: User = dataSnapshot.getValue(User::class.java) ?: User("", "")
                     listenForIncomingCall(presenter, user.id, opponentUid ?: "")
                     presenter.addOpponentInList(opponent)

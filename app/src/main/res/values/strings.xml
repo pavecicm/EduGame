@@ -12,8 +12,10 @@
     <string name="minus">-</string>
     <string name="times">*</string>
     <string name="divide">/</string>
+    <string name="points">Bodovi: %s</string>
     <string name="reset">Poništi</string>
     <string name="enter_all_data">Molimo unesite oba operanda te operaciju kako bi mogli izračunati novi broj!</string>
+    <string name="result_numbers">Vaš rezultat: %d\n Protivnikov rezultat: %d\n Osvojili ste %d bodova</string>
     <string name="congrats">Bravo, osvojili ste %s bodova</string>
     <string name="enter_email">Unesite email</string>
     <string name="enter_password">Unesite password</string>

@@ -63,10 +63,14 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
     }
 
     override fun showGameRequestDialog(id: String) {
-        AlertDialog.Builder(this)
-            .setMessage(R.string.invite_message)
-            .setPositiveButton(R.string.ok) { _, _ -> presenter.acceptCall(id) }
-            .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
-            .show()
+        try {
+            AlertDialog.Builder(this)
+                .setMessage(String.format(getString(R.string.invite_message), id))
+                .setPositiveButton(R.string.ok) { _, _ -> presenter.acceptCall(id) }
+                .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
+                .show()
+        } catch (e: Exception) {
+
+        }
     }
 }

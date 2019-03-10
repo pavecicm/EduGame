@@ -1,5 +1,7 @@
 package hr.fer.edugame.ui.search
 
+import android.os.Handler
+import android.support.v4.os.HandlerCompat
 import hr.fer.edugame.data.firebase.interactors.SearchOpponentInteractor
 import hr.fer.edugame.data.models.User
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
@@ -69,7 +71,11 @@ class SearchUserPresenter @Inject constructor(
     fun acceptCall(id: String) {
         searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.removeUser(id)
-        startGame()
+        preferenceStore.isInitiator = false
+        Handler().postDelayed({
+            startGame()
+        }, 1000)
+
     }
 
     fun declineCall(id: String) {

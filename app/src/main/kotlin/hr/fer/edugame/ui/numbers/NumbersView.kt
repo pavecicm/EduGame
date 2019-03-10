@@ -7,5 +7,10 @@ interface NumbersView : BaseView {
     fun resetLevel(wantedNumber: Int, givenNumbers: List<Int>)
     fun updateGivenNumber(number: Int)
     fun updateOperationsList(operation: String)
-    fun navigateToNextLevel(wanted: Int, numbers: List<Int>)
+    fun navigateToNextLevel(
+        totalPoints: Int,
+        points: Int,
+        ownResult: Int,
+        opponentResult: Int
+    )
 }

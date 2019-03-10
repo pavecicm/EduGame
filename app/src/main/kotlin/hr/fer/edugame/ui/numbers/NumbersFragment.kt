@@ -1,5 +1,6 @@
 package hr.fer.edugame.ui.numbers
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -44,6 +45,9 @@ class NumbersFragment : BaseFragment(), NumbersView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        givenNumbersAdapter = NumbersListAdapter {
+            onNumberClick(it)
+        }
         presenter.init()
     }
 
@@ -123,9 +127,8 @@ class NumbersFragment : BaseFragment(), NumbersView {
 
     override fun startLevel(wanted: Int, givenNumbers: List<Int>) {
         wantedNumber.text = wanted.toString()
-        givenNumbersAdapter = NumbersListAdapter(givenNumbers.toMutableList()) {
-            onNumberClick(it)
-        }
+        givenNumbersAdapter.updateItems(givenNumbers)
+        operationsAdapter.resetAdapter()
         givenNumbersRecycle.adapter = givenNumbersAdapter
     }
 
@@ -149,9 +152,15 @@ class NumbersFragment : BaseFragment(), NumbersView {
         operationsAdapter.updateItem(operation)
     }
 
-    override fun navigateToNextLevel(wanted: Int, numbers: List<Int>) {
-        Toast.makeText(context, String.format(getString(R.string.congrats), 45), Toast.LENGTH_SHORT).show()
-        resetLevel(wanted = wanted, givenNumbers = numbers)
+    override fun navigateToNextLevel(totalPoints: Int, points: Int, ownResult: Int, opponentResult: Int) {
+        AlertDialog.Builder(context)
+            .setMessage(String.format(getString(R.string.result_numbers), ownResult, opponentResult, points))
+            .setPositiveButton(R.string.ok)
+            { _, _ ->
+                presenter.init()
+                navigationTitle.text = String.format(getString(R.string.points), totalPoints)
+            }
+            .show()
     }
 
     private fun onOperatorClick(operation: String) {
@@ -162,11 +171,10 @@ class NumbersFragment : BaseFragment(), NumbersView {
         if (firstOperand.text.isEmpty()) {
             firstOperand.text = number
         } else {
-            if(number.toInt() != 0) {
+            if (number.toInt() != 0) {
                 secondOperand.text = number
             }
         }
-        givenNumbersAdapter.destroyItem(number.toInt())
     }
 
     fun getFirstOperand(): Int? {
@@ -194,5 +202,10 @@ class NumbersFragment : BaseFragment(), NumbersView {
             Toast.makeText(context, R.string.enter_all_data, Toast.LENGTH_SHORT).show()
         }
         return null
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 }
