@@ -5,6 +5,7 @@ import hr.fer.edugame.data.firebase.interactors.NumbersGameInteractor
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.extensions.toOperationUI
 import hr.fer.edugame.ui.shared.base.BasePresenter
+import hr.fer.edugame.ui.shared.helpers.calculatePointsSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.getNumbers
 import hr.fer.edugame.ui.shared.helpers.getWantedNumber
 import javax.inject.Inject
@@ -13,6 +14,8 @@ private const val PLUS = "+"
 private const val MINUS = "-"
 private const val TIMES = "*"
 private const val DIVIDE = "/"
+const val POINTS_TO_WIN = 50
+const val START = 0
 
 class NumbersPresenter @Inject constructor(
     override val view: NumbersView,
@@ -22,25 +25,39 @@ class NumbersPresenter @Inject constructor(
 
     private val givenNumbers: MutableList<Int> = mutableListOf()
     private var wantedNumber = -1
-    private var result: Int = 0
+    private var result: Int = START
     private var opponentResult = NO_CALCULATED_NUMBER
-    private var points = 0
-    private var totalPoints = 0
+    private var points = START
+    private var totalPoints = START
     private var isFinishClicked: Boolean = false
 
     fun init() {
-        numbersGameInteractor.resetCalculatedNumbers()
-        resetCache()
-        if (preferenceStore.opponentId.isNotEmpty() && preferenceStore.isInitiator) {
-            wantedNumber = getWantedNumber()
-            givenNumbers.clear()
-            givenNumbers.addAll(getNumbers(6))
-            numbersGameInteractor.setRandomNumbers(this, givenNumbers, wantedNumber)
-            displayNumbers()
+        if (preferenceStore.isSinglePlayerEnabled) {
+             totalPoints = preferenceStore.singlePlayerPoints
+            startSinglePlayer()
         } else {
-            numbersGameInteractor.listenForNumbers(this)
+            this.totalPoints = preferenceStore.gamePoints
+            numbersGameInteractor.resetCalculatedNumbers()
+            resetCache()
+            if (preferenceStore.opponentId.isNotEmpty() && preferenceStore.isInitiator) {
+                startMultiplayer()
+            } else {
+                numbersGameInteractor.listenForNumbers(this)
+            }
+            numbersGameInteractor.listenForOpponentResult(this)
         }
-        numbersGameInteractor.listenForOpponentResult(this)
+    }
+
+    fun startSinglePlayer() {
+        wantedNumber = getWantedNumber()
+        givenNumbers.clear()
+        givenNumbers.addAll(getNumbers(6))
+        displayNumbers()
+    }
+
+    fun startMultiplayer() {
+        startSinglePlayer()
+        numbersGameInteractor.setRandomNumbers(this, givenNumbers, wantedNumber)
     }
 
     fun setWantedNumber(wantedNumber: Int) {
@@ -56,13 +73,13 @@ class NumbersPresenter @Inject constructor(
         resetCache()
         this.givenNumbers.clear()
         this.givenNumbers.addAll(givenNumbers)
-        if (wantedNumber != -1) {
+        if (wantedNumber != null && wantedNumber != -1) {
             displayNumbers()
         }
     }
 
-    fun displayNumbers() {
-        view.startLevel(wantedNumber = wantedNumber, givenNumbers = givenNumbers)
+    private fun displayNumbers() {
+        view.startLevel(points = totalPoints, wantedNumber = wantedNumber, givenNumbers = givenNumbers)
     }
 
     fun reset() {
@@ -85,38 +102,62 @@ class NumbersPresenter @Inject constructor(
         }
 
     fun handleOoNextLevelClick() {
-        numbersGameInteractor.finishRound(result)
-        isFinishClicked = true
+        if (!preferenceStore.isSinglePlayerEnabled) {
+            numbersGameInteractor.finishRound(result)
+            isFinishClicked = true
+        }
         calculatePoints()
     }
 
     fun onDestroy() {
-        numbersGameInteractor.removeGameRoom()
+        numbersGameInteractor.destroyListeners()
     }
 
     fun saveOpponentResult(opponentResult: Int) {
-        if(this.opponentResult != opponentResult) {
+        if (this.opponentResult != opponentResult) {
             this.opponentResult = opponentResult
             calculatePoints()
         }
     }
 
     fun calculatePoints() {
-        if(opponentResult != -1 && isFinishClicked) {
-            points = hr.fer.edugame.ui.shared.helpers.calculatePoints(wantedNumber, result, opponentResult)
+        if (preferenceStore.isSinglePlayerEnabled) {
+            points = calculatePointsSinglePlayer(wantedNumber, result)
             totalPoints += points
+            preferenceStore.singlePlayerPoints = totalPoints
             view.navigateToNextLevel(
-                totalPoints = totalPoints,
                 points = points,
-                ownResult = result,
-                opponentResult = this.opponentResult
+                result = result
             )
+        } else {
+            if (opponentResult != -1 && isFinishClicked) {
+                points = hr.fer.edugame.ui.shared.helpers.calculatePoints(wantedNumber, result, opponentResult)
+                totalPoints += points
+                if (totalPoints > POINTS_TO_WIN) {
+                    preferenceStore.gamePoints = 0
+                    numbersGameInteractor.declareWin()
+                    view.showGameWon()
+                } else {
+                    preferenceStore.gamePoints = totalPoints
+                    view.navigateToNextLevel(
+                        points = points,
+                        ownResult = result,
+                        opponentResult = this.opponentResult
+                    )
+                }
+            }
         }
     }
 
     fun resetCache() {
-        result = 0
+        result = START
         opponentResult = NO_CALCULATED_NUMBER
         isFinishClicked = false
+    }
+
+    fun handleOpponentWin() {
+        preferenceStore.gamePoints = START
+        numbersGameInteractor.removeGameRoom()
+        view.showGameLost()
     }
 }

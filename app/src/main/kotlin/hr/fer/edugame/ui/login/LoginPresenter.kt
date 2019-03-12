@@ -16,6 +16,7 @@ class LoginPresenter @Inject constructor(
 ) : BasePresenter(view) {
 
     fun onStart() {
+        preferenceStore.gamePoints = 0
         auth.currentUser?.let {
             view.navigateToHome(it)
         }
@@ -78,7 +79,8 @@ class LoginPresenter @Inject constructor(
                         view.navigateToHome(it)
                     }
                 } else {
-                    view.showAuthFailed()
+                    preferenceStore.hasInternet = false
+                    view.navigateToHomeNoInternet()
                 }
             }
     }

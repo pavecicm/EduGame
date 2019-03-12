@@ -41,6 +41,7 @@ class HomeFragment : BaseFragment(), HomeView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        presenter.init()
     }
 
     private fun initUI() {
@@ -51,19 +52,36 @@ class HomeFragment : BaseFragment(), HomeView {
             presenter.logout()
         }
         numbersButton.setThrottlingClickListener {
-            homeListener.onNavigateToNumbers()
+            navigateToNumbers()
         }
         lettersButton.setThrottlingClickListener {
-            homeListener.onNavigateToLetters()
+            navigateToLetters()
         }
         findOpponent.setThrottlingClickListener {
-            homeListener.onNavigateToSearch()
+            navigateToSearch()
         }
+    }
+
+    fun navigateToNumbers() {
+        presenter.startSinglePlayer()
+        homeListener.onNavigateToNumbers()
+    }
+
+    fun navigateToLetters() {
+        presenter.startSinglePlayer()
+        homeListener.onNavigateToLetters()
+    }
+
+    fun navigateToSearch() {
+        presenter.startMultiplayer()
+        homeListener.onNavigateToSearch()
     }
 
     override fun logout() {
         homeListener.onLogout()
     }
 
-
+    override fun disableMultiplayer() {
+        findOpponent.isEnabled = false
+    }
 }

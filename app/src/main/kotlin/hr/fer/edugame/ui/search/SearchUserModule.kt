@@ -3,7 +3,7 @@ package hr.fer.edugame.ui.search
 import dagger.Binds
 import dagger.Module
 
-@Module()
+@Module
 abstract class SearchUserModule {
 
     @Binds

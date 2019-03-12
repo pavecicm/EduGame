@@ -6,4 +6,6 @@ interface BaseView {
     fun showLevelCompleted()
     fun showProgress()
     fun hideProgress()
+    fun showGameWon()
+    fun showGameLost()
 }

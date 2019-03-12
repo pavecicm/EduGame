@@ -16,6 +16,9 @@
     <string name="reset">Poništi</string>
     <string name="enter_all_data">Molimo unesite oba operanda te operaciju kako bi mogli izračunati novi broj!</string>
     <string name="result_numbers">Vaš rezultat: %d\n Protivnikov rezultat: %d\n Osvojili ste %d bodova</string>
+    <string name="result_letters">Vaš rezultat: %s\n Protivnikov rezultat: %s\n Osvojili ste %d bodova</string>
+    <string name="result_numbers_single_player">Vaš rezultat: %d\n Osvojili ste %d bodova</string>
+    <string name="result_letters_single_player">Vaš rezultat: %s\n Osvojili ste %d bodova</string>
     <string name="congrats">Bravo, osvojili ste %s bodova</string>
     <string name="enter_email">Unesite email</string>
     <string name="enter_password">Unesite password</string>
@@ -26,4 +29,10 @@
     <string name="invite_message">Korisnik %s vas je pozvao da zaigrate protiv njega!</string>
     <string name="cancel">Odustani</string>
     <string name="ok">U redu</string>
+    <string name="game_lost">Nažalost protivnik je bio bolji i pobijedio!</string>
+    <string name="game_won">*Bravo!*\nPobijedili ste!</string>
+    <string name="login_failed">Ups! Nešto je pošlo po zlu. Provjerite imate li interneta i jeste li unjeli točne podatke i
+        probajte ponovo!</string>
+    <string name="no_internet">Izgleda da niste spojeni na internet. Ako želite igrati protiv drugih igrača uključite internet i
+        ponovo se ulogirajte!</string>
 </resources>

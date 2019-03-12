@@ -2,6 +2,7 @@ package hr.fer.edugame.ui.search
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import hr.fer.edugame.R
@@ -20,6 +21,8 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
 
     override val layoutRes: Int = R.layout.activity_search_user
     override fun providePresenter(): SearchUserPresenter = presenter
+
+    private var dialog: Dialog? = null
 
 
     @Inject
@@ -64,13 +67,23 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
 
     override fun showGameRequestDialog(id: String) {
         try {
-            AlertDialog.Builder(this)
+            dialog = AlertDialog.Builder(this)
                 .setMessage(String.format(getString(R.string.invite_message), id))
                 .setPositiveButton(R.string.ok) { _, _ -> presenter.acceptCall(id) }
                 .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
-                .show()
+                .create()
+            dialog?.let {
+                it.show()
+            }
         } catch (e: Exception) {
-
         }
+    }
+
+    override fun finish() {
+        dialog?.let {
+            it.dismiss()
+            it.cancel()
+        }
+        super.finish()
     }
 }

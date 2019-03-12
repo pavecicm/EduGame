@@ -4,7 +4,6 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import hr.fer.edugame.constants.FIREBASE_GAMES_CHILD
 import hr.fer.edugame.constants.FIREBASE_USERS_ONLINE_CHILD
 import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
@@ -20,12 +19,15 @@ class SearchOpponentInteractor @Inject constructor(
     private val gamesChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_GAMES_CHILD)
 //    private var opponentFound: Boolean = false
     private var shouldWaitForCall: Boolean = true
+    private var opponentGameRoomListener: ChildEventListener? = null
+    private var incomingCallListener: ChildEventListener? = null
 
     fun addUser(user: User) {
         usersOnlineChildRef.child(user.id).setValue(user)
     }
 
     fun removeUser(uid: String) {
+        shouldWaitForCall = false
         usersOnlineChildRef.child(uid).removeValue()
     }
 
@@ -58,6 +60,12 @@ class SearchOpponentInteractor @Inject constructor(
     }
 
     fun removeGameRoom(currentUid: String, opponentUid: String) {
+        opponentGameRoomListener?.let {
+            gamesChildRef.removeEventListener(it)
+        }
+        incomingCallListener?.let {
+            gamesChildRef.removeEventListener(it)
+        }
         val gameRoomChild = currentUid + "_" + opponentUid
         gamesChildRef.child(gameRoomChild).removeValue()
     }
@@ -71,7 +79,7 @@ class SearchOpponentInteractor @Inject constructor(
     fun listenForOpponentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = opponentUid + "_" + currentUid
         shouldWaitForCall = false
-        gamesChildRef.child(gameRoomChild)
+        opponentGameRoomListener = gamesChildRef.child(gameRoomChild)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     if (dataSnapshot.value == true) {
@@ -98,7 +106,7 @@ class SearchOpponentInteractor @Inject constructor(
 
     fun listenForIncomingCall(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = opponentUid + "_" + currentUid
-        gamesChildRef.child(gameRoomChild)
+        incomingCallListener = gamesChildRef.child(gameRoomChild)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     if (dataSnapshot.value != null && shouldWaitForCall) {

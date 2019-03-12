@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.list_item_letter.view.letterButton
 
 
 class LettersListAdapter(
-    var letters: MutableList<Char>,
+    var letters: MutableList<String>,
     protected val onClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<LettersListAdapter.LetterViewHolder>() {
 
@@ -25,29 +25,29 @@ class LettersListAdapter(
 
     override fun getItemCount() = letters.size
 
-    fun initNewLetters(letters: List<Char>) {
+    fun initNewLetters(letters: List<String>) {
         this.letters.clear()
         this.letters.addAll(letters)
         notifyDataSetChanged()
     }
 
-    fun updateItems(letters: List<Char>) {
+    fun updateItems(letters: List<String>) {
         this.letters.addAll(letters)
         notifyDataSetChanged()
     }
 
-    fun updateItem(letter: Char) {
+    fun updateItem(letter: String) {
         this.letters.add(letter)
         notifyDataSetChanged()
     }
 
-    fun destroyItem(letter: Char) {
+    fun destroyItem(letter: String) {
         letters.remove(letter)
         notifyDataSetChanged()
     }
 
     inner class LetterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(letter: Char) {
+        fun bind(letter: String) {
             with(itemView) {
                 letterButton.text = letter.toString()
                 setThrottlingClickListener {

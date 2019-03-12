@@ -1,5 +1,6 @@
 package hr.fer.edugame.ui.shared.base
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
@@ -9,6 +10,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.hideKeyboard
 import hr.fer.edugame.extensions.showKeyboard
+import hr.fer.edugame.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.toolbar.toolbar
 
 abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
@@ -17,6 +19,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
     abstract val layoutRes: Int
 
     protected abstract fun providePresenter(): BasePresenter?
+
+    private var dialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,5 +62,45 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     override fun hideProgress() {
 
+    }
+
+
+    override fun showGameLost() {
+        dialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.game_lost)))
+            .setPositiveButton(getString(R.string.ok))
+            { _, _ ->
+                navigateToHome()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
+    }
+
+    override fun showGameWon() {
+        dialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.game_won)))
+            .setPositiveButton(getString(R.string.ok))
+            { _, _ ->
+                navigateToHome()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
+    }
+
+    private fun navigateToHome() {
+        startActivity(LoginActivity.newInstance(this))
+    }
+
+    override fun finish() {
+        dialog?.let {
+            if (it.isShowing) {
+                it.cancel()
+            }
+        }
+        super.finish()
     }
 }

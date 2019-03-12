@@ -41,4 +41,8 @@ abstract class BaseFragment : DaggerFragment(), BaseView {
 
     override fun hideProgress() {
     }
+
+    override fun showGameLost() = baseActivity.showGameLost()
+
+    override fun showGameWon() = baseActivity.showGameWon()
 }

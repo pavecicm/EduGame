@@ -57,3 +57,14 @@ fun calculatePoints(wantedNumber: Int, ownResult: Int, opponentResult: Int): Int
         6
     }
 }
+
+fun calculatePointsSinglePlayer(wantedNumber: Int, result: Int) =
+    if(wantedNumber == result) {
+        12
+    } else if (Math.abs(wantedNumber - result) in 0..5) {
+        9
+    } else if (Math.abs(wantedNumber - result) in 6..11) {
+        6
+    } else {
+        0
+    }

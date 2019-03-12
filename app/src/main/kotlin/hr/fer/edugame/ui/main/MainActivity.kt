@@ -1,10 +1,9 @@
-package hr.fer.edugame.ui
+package hr.fer.edugame.ui.main
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
@@ -14,14 +13,13 @@ import hr.fer.edugame.ui.home.info.InfoFragment
 import hr.fer.edugame.ui.letters.LettersFragment
 import hr.fer.edugame.ui.numbers.NumbersFragment
 import hr.fer.edugame.ui.search.SearchUserActivity
-import hr.fer.edugame.ui.settings.SettingsFragment
 import hr.fer.edugame.ui.shared.base.BaseActivity
-import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
+import javax.inject.Inject
 
 private const val BACK_STACK_ROOT_TAG = "root_fragment"
 
-class MainActivity : BaseActivity(), HomeListener {
+class MainActivity : BaseActivity(), HomeListener, MainView {
 
     companion object {
         const val EXTRA_USER = "EXTRA_USER"
@@ -30,10 +28,15 @@ class MainActivity : BaseActivity(), HomeListener {
         fun newInstance(context: Context, currentUser: FirebaseUser) = context.intentFor<MainActivity>(
             EXTRA_USER to currentUser
         )
+
+        fun newInstance(context: Context) = context.intentFor<MainActivity>()
     }
 
     override val layoutRes: Int = R.layout.activity_main
-    override fun providePresenter(): BasePresenter? = null
+    override fun providePresenter(): MainPresenter = presenter
+
+    @Inject
+    lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +67,11 @@ class MainActivity : BaseActivity(), HomeListener {
         replaceFragment(
             NumbersFragment.newInstance(),
             R.id.fragmentContainer,
-            addToBackStack = true,
+            addToBackStack = false,
             rootTag = BACK_STACK_ROOT_TAG
         )
     }
+
     override fun onLogout() {
         finish()
     }
@@ -87,12 +91,17 @@ class MainActivity : BaseActivity(), HomeListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK) {
-            when(requestCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
                 REQUEST_CODE_SEARCH -> navigateToNumbers()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun finish() {
+        presenter.onFinish()
+        super.finish()
     }
 }

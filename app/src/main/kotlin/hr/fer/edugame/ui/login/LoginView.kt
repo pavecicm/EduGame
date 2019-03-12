@@ -5,6 +5,7 @@ import hr.fer.edugame.ui.shared.base.BaseView
 
 interface LoginView: BaseView {
     fun navigateToHome(user: FirebaseUser)
+    fun navigateToHomeNoInternet()
     fun showSuccesfullLogin()
     fun showAuthFailed()
 }

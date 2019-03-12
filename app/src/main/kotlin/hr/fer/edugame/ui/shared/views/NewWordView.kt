@@ -24,7 +24,7 @@ class NewWordView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attr, defStyleAttr), View.OnClickListener {
 
-    private var letters: MutableList<Char> = mutableListOf()
+    private var letters: MutableList<String> = mutableListOf()
     private lateinit var lettersAdapter: LettersListAdapter
     private lateinit var onSaveClickListener: (word: String) -> Unit
 
@@ -34,7 +34,7 @@ class NewWordView @JvmOverloads constructor(
         inflate(R.layout.view_new_word_input, true)
     }
 
-    fun initLettersList(letters: List<Char>, onSaveClickListener: (word: String) -> Unit) {
+    fun initLettersList(letters: List<String>, onSaveClickListener: (word: String) -> Unit) {
         this.letters.clear()
         this.letters.addAll(letters)
         lettersAdapter = LettersListAdapter(this.letters, this)
@@ -49,7 +49,7 @@ class NewWordView @JvmOverloads constructor(
 
         deleteBtn.setOnClickListener {
             if (currentWord.isNotEmpty()) {
-                lettersAdapter.updateItem(currentWord.last())
+                lettersAdapter.updateItem(currentWord.last().toString())
                 currentWord = currentWord.dropLast(1)
                 newWordContainer.removeViewAt(currentWord.length)
             }
@@ -66,7 +66,7 @@ class NewWordView @JvmOverloads constructor(
 
     }
 
-    fun resetLettersList(letters: List<Char>) {
+    fun resetLettersList(letters: List<String>) {
         this.letters.clear()
         this.letters = letters.toMutableList()
         lettersAdapter.initNewLetters(this.letters)
@@ -75,7 +75,7 @@ class NewWordView @JvmOverloads constructor(
 
     override fun onClick(v: View?) {
         val newLetter = (v as TextView).text
-        lettersAdapter.destroyItem(newLetter.first())
+        lettersAdapter.destroyItem(newLetter.toString())
         currentWord += newLetter
         addViews(newWordContainer, 1, newLetter.toString())
     }
@@ -93,7 +93,7 @@ class NewWordView @JvmOverloads constructor(
                     setPaddingHorizontal(R.dimen.spacing_1_5x)
                     setThrottlingClickListener {
                         val position = viewContainer.indexOfChild(this)
-                        lettersAdapter.updateItem(letter = letter.first())
+                        lettersAdapter.updateItem(letter = letter.toString())
                         currentWord = currentWord.removeRange(position, position + 1)
                         viewContainer.removeViewAt(viewContainer.indexOfChild(this))
                     }
@@ -104,7 +104,11 @@ class NewWordView @JvmOverloads constructor(
     }
 
     private fun resetView() {
-        lettersAdapter.updateItems(currentWord.toList())
+        val mutableList = mutableListOf<String>()
+        currentWord.toList().forEach {
+            mutableList.add(it.toString())
+        }
+        lettersAdapter.updateItems(mutableList)
         newWordContainer.removeAllViews()
         currentWord = ""
     }
