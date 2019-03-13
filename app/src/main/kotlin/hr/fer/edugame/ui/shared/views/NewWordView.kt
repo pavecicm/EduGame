@@ -3,8 +3,10 @@ package hr.fer.edugame.ui.shared.views
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.AppCompatTextView
+import android.support.v7.widget.GridLayoutManager
 import android.util.AttributeSet
 import android.view.View
+import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import hr.fer.edugame.R
@@ -40,6 +42,9 @@ class NewWordView @JvmOverloads constructor(
         lettersAdapter = LettersListAdapter(this.letters, this)
 
         with(lettersList) {
+            val gridLayoutManager = GridLayoutManager(context, 2)
+            gridLayoutManager.orientation = GridLayout.HORIZONTAL
+            layoutManager = gridLayoutManager
             setHasFixedSize(true)
             addItemDecoration(HorizontalSpaceItemDecorator(R.dimen.spacing_1x))
             adapter = lettersAdapter
