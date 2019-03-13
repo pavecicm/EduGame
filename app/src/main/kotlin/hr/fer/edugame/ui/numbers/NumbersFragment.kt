@@ -238,7 +238,7 @@ class NumbersFragment : BaseFragment(), NumbersView {
     }
 
     override fun updateProgress(secondsRemaining: Long) {
-        progressBar.progress = 90 - secondsRemaining.toInt()
+        progressBar.progress = secondsRemaining.toInt()
     }
 
     override fun onStop() {

@@ -12,6 +12,7 @@ import hr.fer.edugame.extensions.hideKeyboard
 import hr.fer.edugame.extensions.showKeyboard
 import hr.fer.edugame.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.toolbar.toolbar
+import javax.inject.Inject
 
 abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
@@ -102,5 +103,10 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
             }
         }
         super.finish()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        providePresenter()?.cancel()
     }
 }

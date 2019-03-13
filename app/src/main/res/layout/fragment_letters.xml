@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_0.5x"
             android:indeterminate="false"
-            tools:max="100"
+            tools:max="90"
             tools:progress="20"/>
 
     </FrameLayout>

@@ -45,4 +45,11 @@ abstract class BaseFragment : DaggerFragment(), BaseView {
     override fun showGameLost() = baseActivity.showGameLost()
 
     override fun showGameWon() = baseActivity.showGameWon()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        providePresenter()?.let {
+            it.cancel()
+        }
+    }
 }
