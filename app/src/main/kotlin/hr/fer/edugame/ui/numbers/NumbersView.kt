@@ -16,4 +16,5 @@ interface NumbersView : BaseView {
         points: Int,
         result: Int
     )
+    fun updateProgress(seccondsRemaining: Long)
 }

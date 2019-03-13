@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_numbers.givenNumbersRecycle
 import kotlinx.android.synthetic.main.fragment_numbers.minus
 import kotlinx.android.synthetic.main.fragment_numbers.operator
 import kotlinx.android.synthetic.main.fragment_numbers.plus
+import kotlinx.android.synthetic.main.fragment_numbers.progressBar
 import kotlinx.android.synthetic.main.fragment_numbers.resetBtn
 import kotlinx.android.synthetic.main.fragment_numbers.secondOperand
 import kotlinx.android.synthetic.main.fragment_numbers.times
@@ -62,6 +63,7 @@ class NumbersFragment : BaseFragment(), NumbersView {
             onNumberClick(it)
         }
         presenter.init()
+        presenter.startCountdown()
     }
 
     private fun initUI() {
@@ -233,6 +235,10 @@ class NumbersFragment : BaseFragment(), NumbersView {
             Toast.makeText(context, R.string.enter_all_data, Toast.LENGTH_SHORT).show()
         }
         return null
+    }
+
+    override fun updateProgress(secondsRemaining: Long) {
+        progressBar.progress = 90 - secondsRemaining.toInt()
     }
 
     override fun onStop() {

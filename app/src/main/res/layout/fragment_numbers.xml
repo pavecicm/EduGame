@@ -11,6 +11,33 @@
         android:id="@+id/navigationLayout"
         layout="@layout/view_navigation"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:layout_constraintTop_toBottomOf="@id/navigationLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_0.5x"
+            android:indeterminate="false"
+            tools:max="100"
+            tools:progress="20"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/otpProgressText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--tools:text="1:56"/>-->
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/wantedNumber"
         style="@style/WantedNumber"

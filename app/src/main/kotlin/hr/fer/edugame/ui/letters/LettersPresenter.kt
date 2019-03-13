@@ -1,12 +1,18 @@
 package hr.fer.edugame.ui.letters
 
+import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.data.firebase.interactors.LettersGameInteractor
+import hr.fer.edugame.data.rx.RxSchedulers
+import hr.fer.edugame.data.rx.applySchedulers
+import hr.fer.edugame.data.rx.subscribe
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.numbers.POINTS_TO_WIN
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.helpers.calculatePointSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.calculatePoints
 import hr.fer.edugame.ui.shared.helpers.getLetters
+import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 const val START = 0
@@ -15,7 +21,8 @@ const val NO_FINAL_WORD = ""
 class LettersPresenter @Inject constructor(
     override val view: LettersView,
     private val preferenceStore: PreferenceStore,
-    private val lettersGameInteractor: LettersGameInteractor
+    private val lettersGameInteractor: LettersGameInteractor,
+    private val rxSchedulers: RxSchedulers
 ) : BasePresenter(view) {
 
     private var totalPoints: Int = START
@@ -24,6 +31,13 @@ class LettersPresenter @Inject constructor(
     private var opponentResult = NO_FINAL_WORD
     private var points = START
     private var isFinishClicked: Boolean = false
+
+    private val countdownObservable: Observable<Long> = Observable
+        .interval(0, 1, TimeUnit.SECONDS, rxSchedulers.backgroundThreadScheduler)
+        .map { GAME_TURN_DURATION - resumeCorrection - it }
+        .takeUntil { it <= 0 }
+
+    private var resumeCorrection = 0L
 
     fun init() {
         resetCache()
@@ -95,6 +109,15 @@ class LettersPresenter @Inject constructor(
                 )
             }
         }
+    }
+
+    fun startCountdown() {
+        countdownObservable
+            .applySchedulers(rxSchedulers)
+            .subscribe(this,
+                onNext = { view.updateProgress(it) },
+                onComplete = { onNextLevel(view.getLongestWord()) }
+            )
     }
 
     fun resetCache() {

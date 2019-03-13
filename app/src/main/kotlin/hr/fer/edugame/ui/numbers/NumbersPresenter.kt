@@ -1,13 +1,19 @@
 package hr.fer.edugame.ui.numbers
 
+import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.constants.NO_CALCULATED_NUMBER
 import hr.fer.edugame.data.firebase.interactors.NumbersGameInteractor
+import hr.fer.edugame.data.rx.RxSchedulers
+import hr.fer.edugame.data.rx.applySchedulers
+import hr.fer.edugame.data.rx.subscribe
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.extensions.toOperationUI
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.helpers.calculatePointsSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.getNumbers
 import hr.fer.edugame.ui.shared.helpers.getWantedNumber
+import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val PLUS = "+"
@@ -20,7 +26,8 @@ const val START = 0
 class NumbersPresenter @Inject constructor(
     override val view: NumbersView,
     private val preferenceStore: PreferenceStore,
-    private val numbersGameInteractor: NumbersGameInteractor
+    private val numbersGameInteractor: NumbersGameInteractor,
+    private val rxSchedulers: RxSchedulers
 ) : BasePresenter(view) {
 
     private val givenNumbers: MutableList<Int> = mutableListOf()
@@ -30,6 +37,13 @@ class NumbersPresenter @Inject constructor(
     private var points = START
     private var totalPoints = START
     private var isFinishClicked: Boolean = false
+
+    private val countdownObservable: Observable<Long> = Observable
+        .interval(0, 1, TimeUnit.SECONDS, rxSchedulers.backgroundThreadScheduler)
+        .map { GAME_TURN_DURATION - resumeCorrection - it }
+        .takeUntil { it <= 0 }
+
+    private var resumeCorrection = 0L
 
     fun init() {
         if (preferenceStore.isSinglePlayerEnabled) {
@@ -159,5 +173,14 @@ class NumbersPresenter @Inject constructor(
         preferenceStore.gamePoints = START
         numbersGameInteractor.removeGameRoom()
         view.showGameLost()
+    }
+
+    fun startCountdown() {
+        countdownObservable
+            .applySchedulers(rxSchedulers)
+            .subscribe(this,
+                onNext = { view.updateProgress(it) },
+                onComplete = { handleOoNextLevelClick() }
+            )
     }
 }

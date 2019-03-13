@@ -61,6 +61,10 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // rx
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 
     // logging
     implementation "com.jakewharton.timber:timber:$timberVersion"

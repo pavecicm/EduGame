@@ -12,6 +12,7 @@ import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
 import kotlinx.android.synthetic.main.fragment_letters.newWordView
+import kotlinx.android.synthetic.main.fragment_letters.progressBar
 import kotlinx.android.synthetic.main.fragment_letters.wordsList
 import kotlinx.android.synthetic.main.view_navigation.backBtn
 import kotlinx.android.synthetic.main.view_navigation.navigationTitle
@@ -46,6 +47,7 @@ class LettersFragment : BaseFragment(), LettersView {
         super.onViewCreated(view, savedInstanceState)
         initUI()
         presenter.init()
+        presenter.startCountdown()
     }
 
     fun initUI() {
@@ -94,6 +96,12 @@ class LettersFragment : BaseFragment(), LettersView {
             it.show()
         }
     }
+
+    override fun updateProgress(seccondsRemaining: Long) {
+        progressBar.progress = seccondsRemaining.toInt()
+    }
+
+    override fun getLongestWord(): String = wordsAdapter.getLongestWord()
 
     override fun onStop() {
         dialog?.let {
