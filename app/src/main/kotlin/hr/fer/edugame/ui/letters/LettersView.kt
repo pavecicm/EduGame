@@ -8,4 +8,6 @@ interface LettersView : BaseView {
     fun navigateToNextLevel(result: String, points: Int)
     fun updateProgress(seccondsRemaining: Long)
     fun getLongestWord(): String
+    fun saveWord(word: String)
+    fun showNoSuchWord()
 }

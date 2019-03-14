@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.setThrottlingClickListener
 import hr.fer.edugame.ui.shared.adapters.WordsListAdapter
@@ -67,8 +68,16 @@ class LettersFragment : BaseFragment(), LettersView {
         newWordView.initLettersList(
             letters = letters,
             onSaveClickListener = {
-                wordsAdapter.updateItem(it)
+                presenter.onSaveClicked(it)
             })
+    }
+
+    override fun saveWord(word: String) {
+        wordsAdapter.updateItem(word)
+    }
+
+    override fun showNoSuchWord() {
+        Toast.makeText(context, getString(R.string.no_such_word), Toast.LENGTH_LONG).show()
     }
 
     override fun navigateToNextLevel(ownResult: String, opponentResult: String, points: Int) {

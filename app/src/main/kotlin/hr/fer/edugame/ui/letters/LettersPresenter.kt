@@ -7,6 +7,7 @@ import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.numbers.POINTS_TO_WIN
+import hr.fer.edugame.ui.shared.WordsUtil
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.helpers.calculatePointSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.calculatePoints
@@ -22,7 +23,8 @@ class LettersPresenter @Inject constructor(
     override val view: LettersView,
     private val preferenceStore: PreferenceStore,
     private val lettersGameInteractor: LettersGameInteractor,
-    private val rxSchedulers: RxSchedulers
+    private val rxSchedulers: RxSchedulers,
+    private val wordsUtil: WordsUtil
 ) : BasePresenter(view) {
 
     private var totalPoints: Int = START
@@ -72,6 +74,14 @@ class LettersPresenter @Inject constructor(
             isFinishClicked = true
         }
         calculatePoints()
+    }
+
+    fun onSaveClicked(word: String) {
+        if(wordsUtil.checkIfWordExists(word)) {
+            view.saveWord(word)
+            } else {
+            view.showNoSuchWord()
+        }
     }
 
     fun setLetters(letters: List<String>) {
