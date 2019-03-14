@@ -28,8 +28,10 @@ class LoginPresenter @Inject constructor(
 
     fun loginToFirebase(activity: LoginActivity, email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
+            view.showProgress()
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
+                    view.hideProgress()
                     if (task.isSuccessful) {
                         var currentUser = auth.currentUser
                         preferenceStore.email = currentUser?.email ?: ""
@@ -37,7 +39,6 @@ class LoginPresenter @Inject constructor(
                         currentUser?.let {
                             preferenceStore.hasInternet = true
                             view.navigateToHome(it)
-
                         }
                     } else {
                         createUser(activity, email, password)
@@ -47,8 +48,10 @@ class LoginPresenter @Inject constructor(
     }
 
     fun createUser(activity: LoginActivity, email: String, password: String) {
+        view.showProgress()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
+                view.hideProgress()
                 if (task.isSuccessful) {
                     var currentUser = auth.currentUser
                     if (currentUser != null) {
@@ -67,22 +70,15 @@ class LoginPresenter @Inject constructor(
     }
 
     fun continueAsAnonymous() {
+        view.showProgress()
         auth
             .signInAnonymously()
             .addOnCompleteListener { task ->
+                view.hideProgress()
                 if (task.isSuccessful) {
                     preferenceStore.hasInternet = true
                     var currentUser = auth.currentUser
                     preferenceStore.currentUserID = currentUser!!.uid
-//                    currentUser?.updateProfile(
-//                        UserProfileChangeRequest
-//                            .Builder()
-//                            .setDisplayName("Test")
-//                            .build()
-//                    )
-//                    if (currentUser != null) {
-//                        myRef.child("Users").child(currentUser.email.toString().splitEmail()).child("Request").setValue(currentUser.uid)
-//                    }
                     currentUser?.let {
                         view.navigateToHome(it)
                     }

@@ -4,7 +4,6 @@ import android.content.Context
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.Exception
 
 class WordsUtil {
 
@@ -14,16 +13,14 @@ class WordsUtil {
         var reader: BufferedReader? = null
         try {
             reader = BufferedReader(
-                InputStreamReader(context.assets.open("croatian-wordlist.txt")))
+                InputStreamReader(context.assets.open("croatian-wordlist.txt"))
+            )
 
-            // do reading, usually loop until end of file reading
-            var line: String = ""
+            var line: String
             do {
                 line = reader.readLine()
                 words.add(line)
             } while (line != null)
-
-
         } catch (e: Exception) {
             Timber.e(e)
         } finally {
@@ -39,5 +36,4 @@ class WordsUtil {
 
     fun checkIfWordExists(word: String) =
         words.contains(word.toLowerCase())
-
 }

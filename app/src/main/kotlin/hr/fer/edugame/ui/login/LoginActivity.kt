@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
+import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.setThrottlingClickListener
+import hr.fer.edugame.extensions.show
 import hr.fer.edugame.ui.main.MainActivity
 import hr.fer.edugame.ui.shared.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.anonymous
 import kotlinx.android.synthetic.main.activity_login.email
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.password
+import kotlinx.android.synthetic.main.activity_login.progressLayout
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), LoginView {
@@ -63,5 +66,17 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun showAuthFailed() {
         Toast.makeText(applicationContext, getString(R.string.login_failed), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showProgress() {
+        loginBtn.isEnabled = false
+        anonymous.isEnabled = false
+        progressLayout.show()
+    }
+
+    override fun hideProgress() {
+        loginBtn.isEnabled = true
+        anonymous.isEnabled = true
+        progressLayout.hide()
     }
 }
