@@ -70,9 +70,33 @@ class SearchOpponentInteractor @Inject constructor(
         gamesChildRef.child(gameRoomChild).removeValue()
     }
 
+    fun removeOpponentGameRoom(currentUid: String, opponentUid: String) {
+        val gameRoomChild = opponentUid + "_" + currentUid
+        gamesChildRef.child(gameRoomChild).removeValue()
+    }
+
     fun createCurrentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = currentUid + "_" + opponentUid
         gamesChildRef.child(gameRoomChild).push().setValue(true)
+        gamesChildRef.child(gameRoomChild).addChildEventListener(object: ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+                removeGameRoom(currentUid, opponentUid)
+                presenter.handleCallRefused()
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
 //        listenForOpponentGameRoom(presenter, currentUid, opponentUid)
     }
 
@@ -83,7 +107,7 @@ class SearchOpponentInteractor @Inject constructor(
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     if (dataSnapshot.value == true) {
-                        removeUser(currentUid)
+//                        removeUser(currentUid)
                         presenter.startGameAsInitiator()
                     }
                 }
@@ -96,7 +120,7 @@ class SearchOpponentInteractor @Inject constructor(
 
                 override fun onChildRemoved(p0: DataSnapshot) {
                     removeGameRoom(currentUid, opponentUid)
-                    presenter.removeOpponent(opponentUid)
+                    presenter.handleCallRefused()
                 }
 
                 override fun onCancelled(p0: DatabaseError) {
@@ -123,7 +147,6 @@ class SearchOpponentInteractor @Inject constructor(
 
                 override fun onChildRemoved(p0: DataSnapshot) {
                     removeGameRoom(currentUid, opponentUid)
-                    presenter.removeOpponent(opponentUid)
                 }
 
                 override fun onCancelled(p0: DatabaseError) {

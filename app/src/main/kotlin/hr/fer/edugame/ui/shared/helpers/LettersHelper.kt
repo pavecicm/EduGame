@@ -8,14 +8,14 @@ fun getLetters(vowels: Int, consonants: Int): MutableList<String> {
     for (i in 1..vowels) {
         var number: Int
         do {
-            number = ((1..5).random())
+            number = ((1..145).random())
         } while (numbers.contains(number))
         numbers.add(number)
     }
     for (i in 1..consonants) {
         var number: Int
         do {
-            number = ((6..31).random())
+            number = ((146..368).random())
         } while (numbers.contains(number))
         numbers.add(number)
     }
@@ -32,37 +32,33 @@ fun getConsonant() = turnInGameLetter(((6..31).random()))
 
 fun turnInGameLetter(random: Int): Char =
     when (random) {
-        1 -> 'A'
-        2 -> 'E'
-        3 -> 'I'
-        4 -> 'O'
-        5 -> 'U'
-        6 -> 'B'
-        7 -> 'C'
-        8 -> 'Ć'
-        9 -> 'Č'
-        10 -> 'D'
-        11 -> 'Đ'
-        12 -> 'E'
-        13 -> 'F'
-        14 -> 'G'
-        15 -> 'H'
-        16 -> 'I'
-        17 -> 'J'
-        18 -> 'K'
-        19 -> 'L'
-        20 -> 'M'
-        21 -> 'N'
-        22 -> 'O'
-        23 -> 'P'
-        24 -> 'R'
-        25 -> 'S'
-        26 -> 'Š'
-        27 -> 'T'
-        28 -> 'U'
-        29 -> 'V'
-        30 -> 'Z'
-        31 -> 'Ž'
+        in 1..39 -> 'A'
+        in 40..65 -> 'E'
+        in 66..102 -> 'I'
+        in 103..130 -> 'O'
+        in 131..145 -> 'U'
+        in 146..150 -> 'B'
+        in 151..155 -> 'C'
+        in 156..160 -> 'Ć'
+        in 161..164 -> 'Č'
+        in 165..172 -> 'D'
+        in 173..175 -> 'Đ'
+        in 176..177 -> 'F'
+        in 178..182 -> 'G'
+        in 183..185 -> 'H'
+        in 186..203 -> 'J'
+        in 204..216 -> 'K'
+        in 217..231 -> 'L'
+        in 232..247 -> 'M'
+        in 248..272 -> 'N'
+        in 273..285 -> 'P'
+        in 286..308 -> 'R'
+        in 309..323 -> 'S'
+        in 324..328 -> 'Š'
+        in 329..345 -> 'T'
+        in 346..357 -> 'V'
+        in 358..364 -> 'Z'
+        in 364..368 -> 'Ž'
 //        32 -> '&' // Dž
 //        33 -> '%' // Lj
 //        34 -> '?' // Nj

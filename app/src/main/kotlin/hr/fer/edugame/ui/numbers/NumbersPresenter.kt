@@ -116,6 +116,7 @@ class NumbersPresenter @Inject constructor(
         }
 
     fun handleOoNextLevelClick() {
+        view.showProgress()
         if (!preferenceStore.isSinglePlayerEnabled) {
             numbersGameInteractor.finishRound(result)
             isFinishClicked = true
@@ -139,6 +140,7 @@ class NumbersPresenter @Inject constructor(
             points = calculatePointsSinglePlayer(wantedNumber, result)
             totalPoints += points
             preferenceStore.singlePlayerPoints = totalPoints
+            view.hideProgress()
             view.navigateToNextLevel(
                 points = points,
                 result = result
@@ -150,9 +152,11 @@ class NumbersPresenter @Inject constructor(
                 if (totalPoints > POINTS_TO_WIN) {
                     preferenceStore.gamePoints = 0
                     numbersGameInteractor.declareWin()
+                    view.hideProgress()
                     view.showGameWon()
                 } else {
                     preferenceStore.gamePoints = totalPoints
+                    view.hideProgress()
                     view.navigateToNextLevel(
                         points = points,
                         ownResult = result,

@@ -68,6 +68,7 @@ class LettersPresenter @Inject constructor(
     }
 
     fun onNextLevel(word: String) {
+        view.showProgress()
         result = word
         if(!preferenceStore.isSinglePlayerEnabled) {
             lettersGameInteractor.finishRound(result)
@@ -77,11 +78,13 @@ class LettersPresenter @Inject constructor(
     }
 
     fun onSaveClicked(word: String) {
+        view.showProgress()
         if(wordsUtil.checkIfWordExists(word)) {
             view.saveWord(word)
             } else {
             view.showNoSuchWord()
         }
+        view.hideProgress()
     }
 
     fun setLetters(letters: List<String>) {
@@ -101,6 +104,7 @@ class LettersPresenter @Inject constructor(
             points = calculatePointSinglePlayer(result)
             totalPoints += points
             preferenceStore.singlePlayerPoints = totalPoints
+            view.hideProgress()
             view.navigateToNextLevel(result, points)
         }
         if (opponentResult != "" && isFinishClicked) {
@@ -109,9 +113,11 @@ class LettersPresenter @Inject constructor(
             if (totalPoints > POINTS_TO_WIN) {
                 preferenceStore.gamePoints = START
                 lettersGameInteractor.declareWin()
+                view.hideProgress()
                 view.showGameWon()
             } else {
                 preferenceStore.gamePoints = totalPoints
+                view.hideProgress()
                 view.navigateToNextLevel(
                     points = points,
                     ownResult = result,

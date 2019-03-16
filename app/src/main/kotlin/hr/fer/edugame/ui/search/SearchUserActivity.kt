@@ -5,11 +5,15 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import hr.fer.edugame.R
 import hr.fer.edugame.data.models.User
+import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.intentFor
+import hr.fer.edugame.extensions.show
 import hr.fer.edugame.ui.shared.adapters.OpponentsAdapter
 import hr.fer.edugame.ui.shared.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_search_user.progressLayout
 import kotlinx.android.synthetic.main.activity_search_user.usersRecycle
 import javax.inject.Inject
 
@@ -65,6 +69,10 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
         adapter.removeItem(id)
     }
 
+    override fun showCallRefused() {
+        Toast.makeText(this, getString(R.string.call_refused), Toast.LENGTH_LONG)
+    }
+
     override fun showGameRequestDialog(id: String) {
         try {
             dialog = AlertDialog.Builder(this)
@@ -77,6 +85,14 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
             }
         } catch (e: Exception) {
         }
+    }
+
+    override fun showProgress() {
+        progressLayout.show()
+    }
+
+    override fun hideProgress() {
+        progressLayout.hide()
     }
 
     override fun finish() {

@@ -8,4 +8,5 @@ interface SearchUserView : BaseView {
     fun navigateToGameActivity(opponent: User)
     fun showGameRequestDialog(id: String)
     fun removeOpponnent(id: String)
+    fun showCallRefused()
 }

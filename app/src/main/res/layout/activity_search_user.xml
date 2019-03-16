@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/yellow">
 
     <android.support.v7.widget.RecyclerView
@@ -12,5 +13,18 @@
         android:layout_height="match_parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:orientation="vertical"/>
+
+    <FrameLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

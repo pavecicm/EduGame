@@ -7,13 +7,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import hr.fer.edugame.R
+import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.setThrottlingClickListener
+import hr.fer.edugame.extensions.show
 import hr.fer.edugame.ui.shared.adapters.WordsListAdapter
 import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
 import kotlinx.android.synthetic.main.fragment_letters.newWordView
 import kotlinx.android.synthetic.main.fragment_letters.progressBar
+import kotlinx.android.synthetic.main.fragment_letters.progressLayout
 import kotlinx.android.synthetic.main.fragment_letters.wordsList
 import kotlinx.android.synthetic.main.view_navigation.backBtn
 import kotlinx.android.synthetic.main.view_navigation.navigationTitle
@@ -124,5 +127,13 @@ class LettersFragment : BaseFragment(), LettersView {
     override fun onDestroy() {
         presenter.onDestroy()
         super.onDestroy()
+    }
+
+    override fun showProgress() {
+        progressLayout.show()
+    }
+
+    override fun hideProgress() {
+        progressLayout.hide()
     }
 }

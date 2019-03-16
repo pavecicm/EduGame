@@ -36,4 +36,5 @@
     <string name="no_internet">Izgleda da niste spojeni na internet. Ako želite igrati protiv drugih igrača uključite internet i
         ponovo se ulogirajte!</string>
     <string name="no_such_word">Izgleda da ta riječ ne postoji u riječniku, probajte ponovo.</string>
+    <string name="call_refused">Protivnik je odbio vaš zahtjev za igrom! Pozovite nekog drugog!</string>
 </resources>

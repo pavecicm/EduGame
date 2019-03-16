@@ -60,6 +60,7 @@ class SearchUserPresenter @Inject constructor(
     }
 
     fun callPlayer(id: String) {
+        view.showProgress()
         searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.listenForOpponentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
     }
@@ -68,7 +69,13 @@ class SearchUserPresenter @Inject constructor(
         view.showGameRequestDialog(id)
     }
 
+    fun handleCallRefused() {
+        view.hideProgress()
+        view.showCallRefused()
+    }
+
     fun acceptCall(id: String) {
+        view.showProgress()
         searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.removeUser(id)
         preferenceStore.isInitiator = false
@@ -80,5 +87,6 @@ class SearchUserPresenter @Inject constructor(
 
     fun declineCall(id: String) {
         searchOpponentInteractor.removeGameRoom(preferenceStore.currentUserID, id)
+        searchOpponentInteractor.removeOpponentGameRoom(preferenceStore.currentUserID, id)
     }
 }

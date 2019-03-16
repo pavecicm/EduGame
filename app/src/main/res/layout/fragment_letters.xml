@@ -2,9 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/yellow"
     android:orientation="vertical">
 
@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        app:layout_constraintTop_toBottomOf="@id/navigationLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigationLayout"
         >
 
         <ProgressBar
@@ -31,7 +31,6 @@
 
     </FrameLayout>
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/wordsList"
         android:layout_width="match_parent"
@@ -40,9 +39,27 @@
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-    <hr.fer.edugame.ui.shared.views.NewWordView
-        android:id="@+id/newWordView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
+        <hr.fer.edugame.ui.shared.views.NewWordView
+            android:id="@+id/newWordView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <FrameLayout
+            android:id="@+id/progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+    </FrameLayout>
 </LinearLayout>

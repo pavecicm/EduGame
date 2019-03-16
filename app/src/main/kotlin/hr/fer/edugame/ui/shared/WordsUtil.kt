@@ -1,6 +1,7 @@
 package hr.fer.edugame.ui.shared
 
 import android.content.Context
+import android.util.Log
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -16,10 +17,10 @@ class WordsUtil {
                 InputStreamReader(context.assets.open("croatian-wordlist.txt"))
             )
 
-            var line: String
+            var line: String = reader.readLine()
             do {
-                line = reader.readLine()
                 words.add(line)
+                line = reader.readLine()
             } while (line != null)
         } catch (e: Exception) {
             Timber.e(e)
