@@ -36,7 +36,7 @@ class NewWordView @JvmOverloads constructor(
         inflate(R.layout.view_new_word_input, true)
     }
 
-    fun initLettersList(letters: List<String>, onSaveClickListener: (word: String) -> Unit) {
+    fun initLettersList(letters: List<String> = listOf(), onSaveClickListener: (word: String) -> Unit) {
         this.letters.clear()
         this.letters.addAll(letters)
         lettersAdapter = LettersListAdapter(this.letters, this)

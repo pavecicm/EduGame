@@ -31,17 +31,63 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/infoText"
+        android:padding="@dimen/spacing_2x"
+        android:minLines="2"
+        android:textColor="@color/black"
+        android:text="@string/please_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <View
+        android:id="@+id/alignLayout"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/chooserLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/spacing_1x"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/vowelBtn"
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/spacing_0.5x"
+            android:text="@string/vowel"/>
+
+        <TextView
+            android:id="@+id/consoantBtn"
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/spacing_0.5x"
+            android:text="@string/consoant"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/wordsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
         <hr.fer.edugame.ui.shared.views.NewWordView
             android:id="@+id/newWordView"

@@ -44,6 +44,10 @@ class LettersGameInteractor @Inject constructor(
         presenter.resetCache()
     }
 
+    fun setLetter(letter: String) {
+//        gameRoom.child()
+    }
+
     fun listenForLetters(presenter: LettersPresenter) {
         lettersListeners = opponetGameRoom.child(FIREBASE_GENERATED_LETTERS).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(data: DataSnapshot) {
@@ -119,6 +123,10 @@ class LettersGameInteractor @Inject constructor(
         gameRoom.child(FIREBASE_REACHED_FIFTY_POINTS).setValue(true)
     }
 
+    fun resetLettersList() {
+        gameRoom.child(FIREBASE_GENERATED_LETTERS).removeValue()
+    }
+
     fun destroyListeners() {
         lettersListeners?.let {
             opponetGameRoom.child(FIREBASE_GENERATED_LETTERS).removeEventListener(it)
@@ -129,5 +137,6 @@ class LettersGameInteractor @Inject constructor(
         reachedFiftyListener?.let {
             opponetGameRoom.child(FIREBASE_REACHED_FIFTY_POINTS).removeEventListener(it)
         }
+        resetLettersList()
     }
 }

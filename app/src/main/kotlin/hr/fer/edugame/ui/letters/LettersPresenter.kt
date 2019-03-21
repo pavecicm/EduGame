@@ -6,12 +6,15 @@ import hr.fer.edugame.data.rx.RxSchedulers
 import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
+import hr.fer.edugame.ui.letters.dialog.LetterType
 import hr.fer.edugame.ui.numbers.POINTS_TO_WIN
 import hr.fer.edugame.ui.shared.WordsUtil
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.helpers.calculatePointSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.calculatePoints
+import hr.fer.edugame.ui.shared.helpers.getConsonant
 import hr.fer.edugame.ui.shared.helpers.getLetters
+import hr.fer.edugame.ui.shared.helpers.getVowel
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -50,10 +53,11 @@ class LettersPresenter @Inject constructor(
         } else {
             if (preferenceStore.isInitiator && preferenceStore.opponentId.isNotEmpty()) {
                 totalPoints = preferenceStore.gamePoints
-                startMultiplayer()
+                view.showChooseType()
             } else {
-                lettersGameInteractor.listenForLetters(this)
+                view.showOpponentTurnToChoose(givenLetters)
             }
+            lettersGameInteractor.listenForLetters(this)
             lettersGameInteractor.listenForOpponentResult(this)
         }
     }
@@ -61,6 +65,32 @@ class LettersPresenter @Inject constructor(
     fun startSinglePlayer() {
         givenLetters.addAll(getLetters(3, 6))
         view.displayLetters(totalPoints, givenLetters)
+    }
+
+    fun setNewLetter(type: LetterType) {
+        when(type) {
+            LetterType.VOWEL -> {
+                givenLetters.add(getVowel().toString())
+            }
+            LetterType.CONSOANT -> givenLetters.add(getConsonant().toString())
+        }
+        lettersGameInteractor.setRandomLetters(this, givenLetters)
+        if(givenLetters.size == 9) {
+            view.displayLetters(totalPoints, givenLetters)
+        } else {
+            view.showOpponentTurnToChoose(givenLetters)
+        }
+    }
+
+    fun setLetters(letters: List<String>) {
+        resetCache()
+        givenLetters.clear()
+        givenLetters.addAll(letters)
+        if(letters.size == 9) {
+            view.displayLetters(totalPoints, givenLetters)
+        } else {
+            view.displayLettersAndChooseNext(givenLetters)
+        }
     }
 
     fun startMultiplayer() {
@@ -87,11 +117,6 @@ class LettersPresenter @Inject constructor(
             view.showNoSuchWord()
         }
         view.hideProgress()
-    }
-
-    fun setLetters(letters: List<String>) {
-        resetCache()
-        view.displayLetters(totalPoints, letters)
     }
 
     fun saveOpponentResult(opponentResult: String) {
@@ -151,6 +176,7 @@ class LettersPresenter @Inject constructor(
     }
 
     fun onDestroy() {
+        preferenceStore.isInitiator = !preferenceStore.isInitiator
         lettersGameInteractor.destroyListeners()
     }
 }

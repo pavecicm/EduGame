@@ -10,13 +10,19 @@ import hr.fer.edugame.R
 import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.setThrottlingClickListener
 import hr.fer.edugame.extensions.show
+import hr.fer.edugame.ui.letters.dialog.LetterType
 import hr.fer.edugame.ui.shared.adapters.WordsListAdapter
 import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
+import kotlinx.android.synthetic.main.fragment_letters.alignLayout
+import kotlinx.android.synthetic.main.fragment_letters.chooserLayout
+import kotlinx.android.synthetic.main.fragment_letters.consoantBtn
+import kotlinx.android.synthetic.main.fragment_letters.infoText
 import kotlinx.android.synthetic.main.fragment_letters.newWordView
 import kotlinx.android.synthetic.main.fragment_letters.progressBar
 import kotlinx.android.synthetic.main.fragment_letters.progressLayout
+import kotlinx.android.synthetic.main.fragment_letters.vowelBtn
 import kotlinx.android.synthetic.main.fragment_letters.wordsList
 import kotlinx.android.synthetic.main.view_navigation.backBtn
 import kotlinx.android.synthetic.main.view_navigation.navigationTitle
@@ -51,7 +57,6 @@ class LettersFragment : BaseFragment(), LettersView {
         super.onViewCreated(view, savedInstanceState)
         initUI()
         presenter.init()
-        presenter.startCountdown()
     }
 
     fun initUI() {
@@ -62,17 +67,49 @@ class LettersFragment : BaseFragment(), LettersView {
         nextBtn.setThrottlingClickListener {
             presenter.onNextLevel(wordsAdapter.getLongestWord())
         }
-    }
-
-    override fun displayLetters(points: Int, letters: List<String>) {
-        navigationTitle.text = String.format(getString(R.string.points), points)
+        vowelBtn.setThrottlingClickListener {
+            presenter.setNewLetter(LetterType.VOWEL)
+        }
+        consoantBtn.setThrottlingClickListener {
+            presenter.setNewLetter(LetterType.CONSOANT)
+        }
         wordsAdapter = WordsListAdapter()
         wordsList.adapter = wordsAdapter
         newWordView.initLettersList(
-            letters = letters,
             onSaveClickListener = {
                 presenter.onSaveClicked(it)
             })
+    }
+
+    override fun showOpponentTurnToChoose(letters: List<String>) {
+        showProgress()
+        infoText.text = getString(R.string.opponent_choose)
+        newWordView.resetLettersList(letters)
+        chooserLayout.hide()
+    }
+
+    override fun displayLetters(points: Int, letters: List<String>) {
+        alignLayout.hide()
+        infoText.hide()
+        chooserLayout.hide()
+        wordsList.show()
+        hideProgress()
+        navigationTitle.text = String.format(getString(R.string.points), points)
+        newWordView.resetLettersList(letters)
+        presenter.startCountdown()
+
+    }
+
+    override fun displayLettersAndChooseNext(letters: List<String>) {
+        hideProgress()
+        infoText.text = getString(R.string.please_choose)
+        chooserLayout.show()
+        newWordView.resetLettersList(letters)
+    }
+
+    override fun showChooseType() {
+        infoText.text = getString(R.string.please_choose)
+        chooserLayout.show()
     }
 
     override fun saveWord(word: String) {

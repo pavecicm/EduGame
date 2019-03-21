@@ -31,6 +31,10 @@
     <string name="invite_message">Korisnik %s vas je pozvao da zaigrate protiv njega!</string>
     <string name="cancel">Odustani</string>
     <string name="ok">U redu</string>
+    <string name="consoant">Suglasnik</string>
+    <string name="vowel">Samoglasnik</string>
+    <string name="please_choose">Vaš je red za biranje: samoglasnik ili suglasnik? Odaberite!</string>
+    <string name="opponent_choose">Protivnikov je red da bira tip slova! Pričekajte :)</string>
     <string name="game_lost">Nažalost protivnik je bio bolji i pobijedio!</string>
     <string name="game_won">*Bravo!*\nPobijedili ste!</string>
     <string name="login_failed">Ups! Nešto je pošlo po zlu. Provjerite imate li interneta i jeste li unjeli točne podatke i
