@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_login.email
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.password
 import kotlinx.android.synthetic.main.activity_login.progressLayout
+import kotlinx.android.synthetic.main.activity_login.username
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), LoginView {
@@ -44,7 +45,7 @@ class LoginActivity : BaseActivity(), LoginView {
 
     fun initUI() {
         loginBtn.setThrottlingClickListener {
-            presenter.loginToFirebase(this, email.text.toString(), password.text.toString())
+            presenter.loginToFirebase(this, username.text.toString(), email.text.toString(), password.text.toString())
         }
         anonymous.setThrottlingClickListener {
             presenter.continueAsAnonymous()

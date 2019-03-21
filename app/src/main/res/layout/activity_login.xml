@@ -13,7 +13,7 @@
         android:id="@+id/appTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_3.5x"
+        android:layout_marginTop="@dimen/spacing_2x"
         android:gravity="center"
         android:paddingTop="@dimen/spacing_3x"
         android:text="@string/app_name"
@@ -28,6 +28,17 @@
         android:gravity="center"
         android:text="@string/enter_google_account"
         android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/username"
+        style="@style/EnterEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_6x"
+        android:hint="@string/enter_username"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@id/password"
+        app:layout_constraintTop_toBottomOf="@id/appTitle"/>
 
     <FrameLayout
         android:layout_width="match_parent"

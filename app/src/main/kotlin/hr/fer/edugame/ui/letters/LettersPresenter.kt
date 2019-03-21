@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 const val START = 0
 const val NO_FINAL_WORD = ""
+const val EMPTY_WORD = "EMPTY_WORD"
 
 class LettersPresenter @Inject constructor(
     override val view: LettersView,
@@ -43,7 +44,7 @@ class LettersPresenter @Inject constructor(
 
     fun init() {
         resetCache()
-        if(preferenceStore.isSinglePlayerEnabled) {
+        if (preferenceStore.isSinglePlayerEnabled) {
             totalPoints = preferenceStore.singlePlayerPoints
             startSinglePlayer()
         } else {
@@ -70,18 +71,19 @@ class LettersPresenter @Inject constructor(
     fun onNextLevel(word: String) {
         view.showProgress()
         result = word
-        if(!preferenceStore.isSinglePlayerEnabled) {
+        if (!preferenceStore.isSinglePlayerEnabled) {
             lettersGameInteractor.finishRound(result)
             isFinishClicked = true
         }
-        calculatePoints()
+        if (opponentResult.isNotEmpty())
+            calculatePoints()
     }
 
     fun onSaveClicked(word: String) {
         view.showProgress()
-        if(wordsUtil.checkIfWordExists(word)) {
+        if (wordsUtil.checkIfWordExists(word)) {
             view.saveWord(word)
-            } else {
+        } else {
             view.showNoSuchWord()
         }
         view.hideProgress()
@@ -93,21 +95,21 @@ class LettersPresenter @Inject constructor(
     }
 
     fun saveOpponentResult(opponentResult: String) {
-        if (this.opponentResult != opponentResult) {
+        if (this.opponentResult != opponentResult && opponentResult.isNotEmpty()) {
             this.opponentResult = opponentResult
             calculatePoints()
         }
     }
 
     fun calculatePoints() {
-        if(preferenceStore.isSinglePlayerEnabled) {
+        if (preferenceStore.isSinglePlayerEnabled) {
             points = calculatePointSinglePlayer(result)
             totalPoints += points
             preferenceStore.singlePlayerPoints = totalPoints
             view.hideProgress()
             view.navigateToNextLevel(result, points)
         }
-        if (opponentResult != "" && isFinishClicked) {
+        if (isFinishClicked && this.opponentResult.isNotEmpty()) {
             points = calculatePoints(result, opponentResult)
             totalPoints += points
             if (totalPoints > POINTS_TO_WIN) {

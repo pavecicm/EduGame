@@ -5,6 +5,7 @@
     <string name="letters">Slova</string>
     <string name="about_title">O aplikaciji</string>
     <string name="settings">Postavke</string>
+    <string name="find_user">Pronađi protivnika</string>
     <string name="about_text">...</string>
     <string name="close_text">X</string>
     <string name="save_text">✔</string>
@@ -22,6 +23,7 @@
     <string name="congrats">Bravo, osvojili ste %s bodova</string>
     <string name="enter_email">Unesite email</string>
     <string name="enter_password">Unesite password</string>
+    <string name="enter_username">Unesite korisničko ime</string>
     <string name="login">Prijavi se</string>
     <string name="anonymous"><u>Igraj kao gost</u></string>
     <string name="enter_google_account">Ulogirajte se pomoću google računa! Unesite email i password!</string>

@@ -93,11 +93,11 @@ class NumbersPresenter @Inject constructor(
     }
 
     private fun displayNumbers() {
-        view.startLevel(points = totalPoints, wantedNumber = wantedNumber, givenNumbers = givenNumbers)
+        view.startLevel(totalPoints = totalPoints, wanted = wantedNumber, givenNumbers = givenNumbers)
     }
 
     fun reset() {
-        view.resetLevel(wantedNumber = wantedNumber, givenNumbers = givenNumbers)
+        view.resetLevel(wanted = wantedNumber, givenNumbers = givenNumbers)
     }
 
     fun handleOnCalculateClicked(first: Int, second: Int, operation: String) {

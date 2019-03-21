@@ -26,7 +26,7 @@ class LoginPresenter @Inject constructor(
         }
     }
 
-    fun loginToFirebase(activity: LoginActivity, email: String, password: String) {
+    fun loginToFirebase(activity: LoginActivity, username: String, email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             view.showProgress()
             auth.signInWithEmailAndPassword(email, password)

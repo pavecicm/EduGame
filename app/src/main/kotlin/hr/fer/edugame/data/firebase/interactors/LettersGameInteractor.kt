@@ -12,8 +12,8 @@ import hr.fer.edugame.constants.FIREBASE_REACHED_FIFTY_POINTS
 import hr.fer.edugame.constants.FIREBASE_WORDS_GAME
 import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
+import hr.fer.edugame.ui.letters.EMPTY_WORD
 import hr.fer.edugame.ui.letters.LettersPresenter
-import hr.fer.edugame.ui.letters.NO_FINAL_WORD
 import javax.inject.Inject
 
 class LettersGameInteractor @Inject constructor(
@@ -63,18 +63,14 @@ class LettersGameInteractor @Inject constructor(
             override fun onChildAdded(data: DataSnapshot, p1: String?) {
                 if (data.key == FIREBASE_FINAL_WORD && data.value != null) {
                     val temp = data.value.toString()
-                    if (temp != NO_FINAL_WORD) {
-                        presenter.saveOpponentResult(temp)
-                    }
+                    presenter.saveOpponentResult(temp)
                 }
             }
 
             override fun onChildChanged(data: DataSnapshot, p1: String?) {
                 if (data.key == FIREBASE_FINAL_WORD && data.value != null) {
                     val temp = data.value.toString()
-                    if (temp != NO_FINAL_WORD) {
-                        presenter.saveOpponentResult(temp)
-                    }
+                    presenter.saveOpponentResult(temp)
                 }
             }
 
@@ -106,7 +102,11 @@ class LettersGameInteractor @Inject constructor(
     }
 
     fun finishRound(word: String) {
-        gameRoom.child(FIREBASE_FINAL_WORD).setValue(word)
+        if (word.isNotEmpty()) {
+            gameRoom.child(FIREBASE_FINAL_WORD).setValue(word)
+        } else {
+            gameRoom.child(FIREBASE_FINAL_WORD).setValue(EMPTY_WORD)
+        }
     }
 
     fun resetCalculatedNumbers() {

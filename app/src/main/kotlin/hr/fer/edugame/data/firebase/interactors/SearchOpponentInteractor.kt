@@ -17,7 +17,6 @@ class SearchOpponentInteractor @Inject constructor(
 
     private val usersOnlineChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_USERS_ONLINE_CHILD)
     private val gamesChildRef: DatabaseReference = firebaseManager.databaseReference().child(FIREBASE_GAMES_CHILD)
-//    private var opponentFound: Boolean = false
     private var shouldWaitForCall: Boolean = true
     private var opponentGameRoomListener: ChildEventListener? = null
     private var incomingCallListener: ChildEventListener? = null
@@ -33,13 +32,12 @@ class SearchOpponentInteractor @Inject constructor(
 
     fun searchForOpponent(presenter: SearchUserPresenter, user: User) {
         usersOnlineChildRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                val opponentUid = dataSnapshot.key
+            override fun onChildAdded(data: DataSnapshot, p1: String?) {
+                val opponentUid = data.key
                 if (user.id != opponentUid) {
-                    val opponent: User = dataSnapshot.getValue(User::class.java) ?: User("", "")
+                    val opponent: User = data.getValue(User::class.java) ?: User("", "")
                     listenForIncomingCall(presenter, user.id, opponentUid ?: "")
                     presenter.addOpponentInList(opponent)
-
                 }
             }
 
@@ -50,7 +48,6 @@ class SearchOpponentInteractor @Inject constructor(
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
-//                removeGameRoom(user.id, p0.key ?: "")
                 presenter.removeOpponent(p0.key ?: "")
             }
 
@@ -70,17 +67,33 @@ class SearchOpponentInteractor @Inject constructor(
         gamesChildRef.child(gameRoomChild).removeValue()
     }
 
+    fun removeListeners() {
+        opponentGameRoomListener?.let {
+            gamesChildRef.removeEventListener(it)
+        }
+        incomingCallListener?.let {
+            gamesChildRef.removeEventListener(it)
+        }
+    }
+
     fun removeOpponentGameRoom(currentUid: String, opponentUid: String) {
         val gameRoomChild = opponentUid + "_" + currentUid
         gamesChildRef.child(gameRoomChild).removeValue()
     }
 
-    fun createCurrentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
+    fun createCurrentGameRoom(currentUid: String, opponentUid: String) {
         val gameRoomChild = currentUid + "_" + opponentUid
-        gamesChildRef.child(gameRoomChild).push().setValue(true)
-        gamesChildRef.child(gameRoomChild).addChildEventListener(object: ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+        gamesChildRef.child(gameRoomChild).setValue(true)
+    }
 
+    fun listenForOpponentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
+        val gameRoomChild = opponentUid + "_" + currentUid
+        shouldWaitForCall = false
+        gamesChildRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(data: DataSnapshot, s: String?) {
+                if (data.key == gameRoomChild) {
+                    presenter.startGameAsInitiator()
+                }
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -89,68 +102,94 @@ class SearchOpponentInteractor @Inject constructor(
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {
             }
 
-            override fun onChildRemoved(p0: DataSnapshot) {
-                removeGameRoom(currentUid, opponentUid)
-                presenter.handleCallRefused()
+            override fun onChildRemoved(data: DataSnapshot) {
+                if (data.key == gameRoomChild) {
+                    shouldWaitForCall = true
+                    opponentGameRoomListener?.let {
+                        gamesChildRef.removeEventListener(it)
+                    }
+                    presenter.handleCallRefused()
+                }
             }
 
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-//        listenForOpponentGameRoom(presenter, currentUid, opponentUid)
-    }
-
-    fun listenForOpponentGameRoom(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
-        val gameRoomChild = opponentUid + "_" + currentUid
-        shouldWaitForCall = false
-        opponentGameRoomListener = gamesChildRef.child(gameRoomChild)
-            .addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    if (dataSnapshot.value == true) {
-//                        removeUser(currentUid)
-                        presenter.startGameAsInitiator()
-                    }
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                }
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-                }
-
-                override fun onChildRemoved(p0: DataSnapshot) {
-                    removeGameRoom(currentUid, opponentUid)
-                    presenter.handleCallRefused()
-                }
-
-                override fun onCancelled(p0: DatabaseError) {
-                }
-            })
+//        opponentGameRoomListener = gamesChildRef.child(gameRoomChild)
+//            .addChildEventListener(object : ChildEventListener {
+//                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+//                    if (dataSnapshot.value == true) {
+////                        removeUser(currentUid)
+//                        presenter.startGameAsInitiator()
+//                    }
+//                }
+//
+//                override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+//                }
+//
+//                override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+//                }
+//
+//                override fun onChildRemoved(p0: DataSnapshot) {
+////                    shouldWaitForCall = true
+////                    opponentGameRoomListener?.let {
+////                        gamesChildRef.removeEventListener(it)
+////                    }
+////                    presenter.handleCallRefused()
+//                }
+//
+//                override fun onCancelled(p0: DatabaseError) {
+//                }
+//            })
     }
 
     fun listenForIncomingCall(presenter: SearchUserPresenter, currentUid: String, opponentUid: String) {
         val gameRoomChild = opponentUid + "_" + currentUid
-        incomingCallListener = gamesChildRef.child(gameRoomChild)
+        gamesChildRef
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    if (dataSnapshot.value != null && shouldWaitForCall) {
+                    if (dataSnapshot.key == gameRoomChild && dataSnapshot.value != null && shouldWaitForCall) {
                         presenter.showCall(opponentUid)
                     }
                 }
 
                 override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-
                 }
 
                 override fun onChildMoved(p0: DataSnapshot, p1: String?) {
                 }
 
-                override fun onChildRemoved(p0: DataSnapshot) {
-                    removeGameRoom(currentUid, opponentUid)
+                override fun onChildRemoved(data: DataSnapshot) {
+                    if (data.key == gameRoomChild) {
+                        removeGameRoom(currentUid, opponentUid)
+                    }
                 }
 
                 override fun onCancelled(p0: DatabaseError) {
                 }
             })
+
+//            .child(gameRoomChild)
+//            .addChildEventListener(object : ChildEventListener {
+//                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+//                    if (dataSnapshot.value != null && shouldWaitForCall) {
+//                        presenter.showCall(opponentUid)
+//                    }
+//                }
+//
+//                override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+//
+//                }
+//
+//                override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+//                }
+//
+//                override fun onChildRemoved(p0: DataSnapshot) {
+//                    removeGameRoom(currentUid, opponentUid)
+//                }
+//
+//                override fun onCancelled(p0: DatabaseError) {
+//                }
+//            })
     }
 }

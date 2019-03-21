@@ -61,7 +61,7 @@ class SearchUserPresenter @Inject constructor(
 
     fun callPlayer(id: String) {
         view.showProgress()
-        searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
+        searchOpponentInteractor.createCurrentGameRoom(currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.listenForOpponentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
     }
 
@@ -76,8 +76,9 @@ class SearchUserPresenter @Inject constructor(
 
     fun acceptCall(id: String) {
         view.showProgress()
-        searchOpponentInteractor.createCurrentGameRoom(this, currentUid = currentUser.id, opponentUid = id)
+        searchOpponentInteractor.createCurrentGameRoom(currentUid = currentUser.id, opponentUid = id)
         searchOpponentInteractor.removeUser(id)
+        searchOpponentInteractor.removeListeners()
         preferenceStore.isInitiator = false
         Handler().postDelayed({
             startGame()

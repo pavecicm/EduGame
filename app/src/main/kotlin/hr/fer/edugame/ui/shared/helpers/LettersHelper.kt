@@ -1,6 +1,7 @@
 package hr.fer.edugame.ui.shared.helpers
 
 import hr.fer.edugame.extensions.random
+import hr.fer.edugame.ui.letters.EMPTY_WORD
 
 fun getLetters(vowels: Int, consonants: Int): MutableList<String> {
     val numbers: MutableList<Int> = mutableListOf()
@@ -26,9 +27,9 @@ fun getLetters(vowels: Int, consonants: Int): MutableList<String> {
 }
 
 fun getVowel(): Char =
-    turnInGameLetter(((1..5).random()))
+    turnInGameLetter(((1..145).random()))
 
-fun getConsonant() = turnInGameLetter(((6..31).random()))
+fun getConsonant() = turnInGameLetter(((146..368).random()))
 
 fun turnInGameLetter(random: Int): Char =
     when (random) {
@@ -70,6 +71,8 @@ fun calculatePoints(ownResult: String, opponentResult: String): Int {
     val opponent = opponentResult.length
     return if (own == opponent) {
         0
+    } else if (opponentResult == EMPTY_WORD) {
+        12
     } else if (own < opponent) {
         0
     } else if (own == 9) {
