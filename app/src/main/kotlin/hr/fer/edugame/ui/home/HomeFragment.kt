@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.view.View
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.setThrottlingClickListener
-import hr.fer.edugame.ui.search.SearchUserActivity
 import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
 import kotlinx.android.synthetic.main.fragment_home.findOpponent
-import kotlinx.android.synthetic.main.fragment_home.infoButton
 import kotlinx.android.synthetic.main.fragment_home.lettersButton
 import kotlinx.android.synthetic.main.fragment_home.logoutBtn
 import kotlinx.android.synthetic.main.fragment_home.numbersButton
+import kotlinx.android.synthetic.main.fragment_home.rankButton
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment(), HomeView {
@@ -45,8 +44,8 @@ class HomeFragment : BaseFragment(), HomeView {
     }
 
     private fun initUI() {
-        infoButton.setThrottlingClickListener {
-            homeListener.onNavigateToInfo()
+        rankButton.setThrottlingClickListener {
+            homeListener.onNavigateToRankList()
         }
         logoutBtn.setThrottlingClickListener {
             presenter.logout()

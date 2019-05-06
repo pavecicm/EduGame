@@ -12,6 +12,7 @@ import hr.fer.edugame.ui.home.HomeFragment
 import hr.fer.edugame.ui.home.info.InfoFragment
 import hr.fer.edugame.ui.letters.LettersFragment
 import hr.fer.edugame.ui.numbers.NumbersFragment
+import hr.fer.edugame.ui.rank.RankListFragment
 import hr.fer.edugame.ui.search.SearchUserActivity
 import hr.fer.edugame.ui.shared.base.BaseActivity
 import hr.fer.edugame.ui.shared.listeners.HomeListener
@@ -44,6 +45,7 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
     }
 
     override fun onNavigateToLetters() {
+        presenter.savePoints()
         replaceFragment(
             LettersFragment.newInstance(),
             R.id.fragmentContainer,
@@ -54,6 +56,7 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
     }
 
     override fun onNavigateToNumbers() {
+        presenter.savePoints()
         replaceFragment(
             NumbersFragment.newInstance(),
             R.id.fragmentContainer,
@@ -76,9 +79,9 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
         finish()
     }
 
-    override fun onNavigateToInfo() {
+    override fun onNavigateToRankList() {
         replaceFragment(
-            InfoFragment.newInstance(),
+            RankListFragment.newInstance(),
             R.id.fragmentContainer,
             addToBackStack = true,
             rootTag = BACK_STACK_ROOT_TAG,

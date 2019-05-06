@@ -57,6 +57,12 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
             sharedPreferences[PreferenceStore.Constants.KEY_SINGLE_PLAYER_POINTS] = value
         }
 
+    override var multiplayerPoints: Int
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_MUPLTIPLAYER_POINTS] ?: 0
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_MUPLTIPLAYER_POINTS] = value
+        }
+
     override var hasInternet: Boolean
         get() = sharedPreferences[PreferenceStore.Constants.KEY_INTERNET] ?: true
         set(value) {

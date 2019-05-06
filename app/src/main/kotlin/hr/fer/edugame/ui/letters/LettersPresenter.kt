@@ -2,6 +2,7 @@ package hr.fer.edugame.ui.letters
 
 import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.data.firebase.interactors.LettersGameInteractor
+import hr.fer.edugame.data.firebase.interactors.RankInteractor
 import hr.fer.edugame.data.rx.RxSchedulers
 import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe

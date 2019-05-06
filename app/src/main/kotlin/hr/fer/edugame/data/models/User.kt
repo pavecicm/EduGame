@@ -13,10 +13,16 @@ class User() : Serializable {
 
     var username: String = ""
 
-    constructor(id: String = "", email: String = "", username: String = ""): this() {
+    var singlePlayerPoints = 0
+
+    var muliplayerPoints = 0
+
+    constructor(id: String = "", email: String = "", username: String = "", singlePlayerPoints: Int = 0, multiplayerPoints: Int = 0): this() {
         this.id = id
         this.email = email
         this.username = username
+        this.singlePlayerPoints = singlePlayerPoints
+        this.muliplayerPoints = muliplayerPoints
     }
 
     constructor(source: Parcel): this() {
@@ -38,7 +44,7 @@ class User() : Serializable {
 //    }
 //
 //    override fun writeToParcel(dest: Parcel, flags: Int) {
-//        dest.writeString(opponents)
+//        dest.writeString(users)
 //        dest.writeString(email)
 //    }
 }
