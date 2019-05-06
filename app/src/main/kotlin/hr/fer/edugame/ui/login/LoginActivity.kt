@@ -45,10 +45,18 @@ class LoginActivity : BaseActivity(), LoginView {
 
     fun initUI() {
         loginBtn.setThrottlingClickListener {
-            presenter.loginToFirebase(this, username.text.toString(), email.text.toString(), password.text.toString())
+            if(username.text.isNullOrEmpty()) {
+                username.error = getString(R.string.username_error)
+            } else {
+                presenter.loginToFirebase(this, username.text.toString(), email.text.toString(), password.text.toString())
+            }
         }
         anonymous.setThrottlingClickListener {
-            presenter.continueAsAnonymous()
+            if(username.text.isNullOrEmpty()) {
+                username.error = getString(R.string.username_error)
+            } else {
+                presenter.continueAsAnonymous(username.text.toString())
+            }
         }
     }
 

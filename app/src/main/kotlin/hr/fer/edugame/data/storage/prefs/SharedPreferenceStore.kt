@@ -33,6 +33,12 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
             sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] = value
         }
 
+    override var username: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_USERNAME] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_USERNAME] = value
+        }
+
     override var gamePoints: Int
         get() = sharedPreferences[PreferenceStore.Constants.KEY_GAME_POINTS] ?: 0
         set(value) {

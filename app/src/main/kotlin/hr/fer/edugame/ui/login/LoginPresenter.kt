@@ -38,16 +38,17 @@ class LoginPresenter @Inject constructor(
                         preferenceStore.currentUserID = currentUser!!.uid
                         currentUser?.let {
                             preferenceStore.hasInternet = true
+                            preferenceStore.username = username
                             view.navigateToHome(it)
                         }
                     } else {
-                        createUser(activity, email, password)
+                        createUser(activity, email, password, username)
                     }
                 }
         }
     }
 
-    fun createUser(activity: LoginActivity, email: String, password: String) {
+    fun createUser(activity: LoginActivity, email: String, password: String, username: String) {
         view.showProgress()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
@@ -58,6 +59,7 @@ class LoginPresenter @Inject constructor(
                         preferenceStore.hasInternet = true
                         preferenceStore.email = currentUser.email ?: ""
                         preferenceStore.currentUserID = currentUser.uid
+                        preferenceStore.username = username
                         firebaseDatabaseManager.createUser(currentUser.uid, currentUser.email ?: "")
                     }
                     currentUser?.let {
@@ -69,7 +71,7 @@ class LoginPresenter @Inject constructor(
             }
     }
 
-    fun continueAsAnonymous() {
+    fun continueAsAnonymous(username: String) {
         view.showProgress()
         auth
             .signInAnonymously()
@@ -79,6 +81,7 @@ class LoginPresenter @Inject constructor(
                     preferenceStore.hasInternet = true
                     var currentUser = auth.currentUser
                     preferenceStore.currentUserID = currentUser!!.uid
+                    preferenceStore.username = username
                     currentUser?.let {
                         view.navigateToHome(it)
                     }

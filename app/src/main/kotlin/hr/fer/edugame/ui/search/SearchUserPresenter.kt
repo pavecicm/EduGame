@@ -18,7 +18,7 @@ class SearchUserPresenter @Inject constructor(
     private lateinit var currentUser: User
 
     fun init() {
-        currentUser = User(preferenceStore.currentUserID, preferenceStore.email)
+        currentUser = User(preferenceStore.currentUserID, preferenceStore.email, preferenceStore.username)
     }
 
     fun addUserToOnlineUser(user: User) = searchOpponentInteractor.addUser(user)
@@ -29,7 +29,7 @@ class SearchUserPresenter @Inject constructor(
 
     fun addOpponentInList(opponent: User) {
         this.opponent = opponent
-        view.addOpponentFoundView(opponent.id, opponent.email)
+        view.addOpponentFoundView(opponent)
     }
 
     fun removeOpponent(id: String) {

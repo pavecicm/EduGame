@@ -35,7 +35,7 @@ class SearchOpponentInteractor @Inject constructor(
             override fun onChildAdded(data: DataSnapshot, p1: String?) {
                 val opponentUid = data.key
                 if (user.id != opponentUid) {
-                    val opponent: User = data.getValue(User::class.java) ?: User("", "")
+                    val opponent: User = data.getValue(User::class.java) ?: User()
                     listenForIncomingCall(presenter, user.id, opponentUid ?: "")
                     presenter.addOpponentInList(opponent)
                 }

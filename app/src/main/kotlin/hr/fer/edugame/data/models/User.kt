@@ -11,15 +11,19 @@ class User() : Serializable {
 
     var email: String = ""
 
-    constructor(id: String, email: String): this() {
+    var username: String = ""
+
+    constructor(id: String = "", email: String = "", username: String = ""): this() {
         this.id = id
         this.email = email
+        this.username = username
     }
 
     constructor(source: Parcel): this() {
-        source?.let {
-            id = it.readString() ?: ""
-            email = it.readString() ?: ""
+        with(source) {
+            id = readString() ?: ""
+            email = readString() ?: ""
+            username = readString() ?: ""
         }
     }
 
@@ -34,7 +38,7 @@ class User() : Serializable {
 //    }
 //
 //    override fun writeToParcel(dest: Parcel, flags: Int) {
-//        dest.writeString(id)
+//        dest.writeString(opponents)
 //        dest.writeString(email)
 //    }
 }

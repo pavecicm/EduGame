@@ -66,8 +66,8 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
         finish()
     }
 
-    override fun addOpponentFoundView(uid: String, email: String) {
-        adapter.updateItem(uid)
+    override fun addOpponentFoundView(user: User) {
+        adapter.updateItem(user)
     }
 
     override fun removeOpponnent(id: String) {
@@ -79,9 +79,10 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
     }
 
     override fun showGameRequestDialog(id: String) {
+        val username = adapter.getOpponent(id)?.username
         try {
             dialog = AlertDialog.Builder(this)
-                .setMessage(String.format(getString(R.string.invite_message), id))
+                .setMessage(String.format(getString(R.string.invite_message), username))
                 .setPositiveButton(R.string.ok) { _, _ -> presenter.acceptCall(id) }
                 .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
                 .create()
