@@ -5,25 +5,22 @@ import android.os.Parcelable
 import java.io.Serializable
 
 
-class User() : Serializable {
+class User(
+    var id: String = "",
+    var email: String? = "",
+    var username: String? = "",
+    var singlePlayerPoints: Int? = 0,
+    var multiplayerPoints: Int? = 0
+) : Serializable {
 
-    var id: String = ""
 
-    var email: String = ""
-
-    var username: String = ""
-
-    var singlePlayerPoints = 0
-
-    var muliplayerPoints = 0
-
-    constructor(id: String = "", email: String = "", username: String = "", singlePlayerPoints: Int = 0, multiplayerPoints: Int = 0): this() {
-        this.id = id
-        this.email = email
-        this.username = username
-        this.singlePlayerPoints = singlePlayerPoints
-        this.muliplayerPoints = muliplayerPoints
-    }
+//    constructor(id: String = "", email: String? = "", username: String? = "", singlePlayerPoints: Int? = 0, multiplayerPoints: Int? = 0): this() {
+//        this.id = id
+//        this.email = email ?: ""
+//        this.username = username ?: ""
+//        this.singlePlayerPoints = singlePlayerPoints ?: 0
+//        this.multiplayerPoints = multiplayerPoints ?: 0
+//    }
 
     constructor(source: Parcel): this() {
         with(source) {

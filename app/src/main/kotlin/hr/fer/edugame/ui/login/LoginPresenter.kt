@@ -1,14 +1,9 @@
 package hr.fer.edugame.ui.login
 
-import io.reactivex.Observable
 import com.google.firebase.auth.FirebaseAuth
 import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
-import hr.fer.edugame.data.rx.RxSchedulers
-import hr.fer.edugame.data.rx.applySchedulers
-import hr.fer.edugame.data.rx.subscribe
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.shared.base.BasePresenter
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor(

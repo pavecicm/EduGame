@@ -25,10 +25,10 @@ class RankListAdapter(
 
     override fun getItemCount() = users.size
 
-    fun updateItemsMultyplayer(users: List<User>) {
+    fun updateItemsMultiplayer(users: List<User>) {
         this.users.clear()
         users.sortedBy {
-            it.muliplayerPoints
+            it.multiplayerPoints
         }
         this.users.addAll(users)
         notifyDataSetChanged()
@@ -57,7 +57,7 @@ class RankListAdapter(
         fun bind(user: User, position: Int) {
             with(itemView) {
                 username.text = user.username
-                rank.text = position.toString()
+                rank.text = (position + 1).toString()
             }
         }
     }

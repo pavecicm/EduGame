@@ -5,9 +5,7 @@ import android.view.View
 import hr.fer.edugame.R
 import hr.fer.edugame.data.models.User
 import hr.fer.edugame.ui.shared.adapters.RankListAdapter
-import hr.fer.edugame.ui.shared.base.BaseActivity
 import hr.fer.edugame.ui.shared.base.BaseFragment
-import hr.fer.edugame.ui.shared.base.BasePresenter
 import kotlinx.android.synthetic.main.fragment_rank_list.rankList
 import javax.inject.Inject
 
@@ -21,7 +19,7 @@ class RankListFragment : BaseFragment(), RankListView {
     override fun providePresenter(): RankListPresenter = presenter
 
     @Inject
-    private lateinit var presenter: RankListPresenter
+    lateinit var presenter: RankListPresenter
 
     private val multiplayerAdapter = RankListAdapter()
     private val singlePlayerAdapter = RankListAdapter()
@@ -33,7 +31,7 @@ class RankListFragment : BaseFragment(), RankListView {
     }
 
     override fun showMultiplayerRank(listData: List<User>) {
-        multiplayerAdapter.updateItemsMultyplayer(listData)
+        multiplayerAdapter.updateItemsMultiplayer(listData)
     }
 
     override fun showSinglePlayerRank(listData: List<User>) {

@@ -14,6 +14,7 @@ import hr.fer.edugame.ui.main.MainModule
 import hr.fer.edugame.ui.numbers.NumbersFragment
 import hr.fer.edugame.ui.numbers.NumbersModule
 import hr.fer.edugame.ui.rank.RankListFragment
+import hr.fer.edugame.ui.rank.RankListModule
 import hr.fer.edugame.ui.search.SearchUserActivity
 import hr.fer.edugame.ui.search.SearchUserModule
 import hr.fer.edugame.ui.settings.SettingsFragment
@@ -46,6 +47,6 @@ abstract class DiBuilder {
     @ContributesAndroidInjector
     abstract fun bindInfoFragment(): InfoFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [RankListModule::class])
     abstract fun bindRankListFragmet(): RankListFragment
 }
