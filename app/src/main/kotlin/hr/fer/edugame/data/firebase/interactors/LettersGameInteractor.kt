@@ -14,6 +14,7 @@ import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.letters.EMPTY_WORD
 import hr.fer.edugame.ui.letters.LettersPresenter
+import hr.fer.edugame.ui.shared.base.BasePresenter
 import javax.inject.Inject
 
 class LettersGameInteractor @Inject constructor(

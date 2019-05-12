@@ -166,11 +166,11 @@ class LettersFragment : BaseFragment(), LettersView {
         super.onDestroy()
     }
 
-//    override fun showProgress() {
-//        progressLayout.show()
-//    }
+    override fun showProgress() {
+        progressLayout.show()
+    }
 
-//    override fun hideProgress() {
-//        progressLayout.hide()
-//    }
+    override fun hideProgress() {
+        progressLayout.hide()
+    }
 }

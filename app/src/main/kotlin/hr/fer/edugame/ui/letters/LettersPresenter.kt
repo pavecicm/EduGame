@@ -2,6 +2,7 @@ package hr.fer.edugame.ui.letters
 
 import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.data.firebase.interactors.LettersGameInteractor
+import hr.fer.edugame.data.firebase.interactors.RankInteractor
 import hr.fer.edugame.data.rx.RxSchedulers
 import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe
@@ -14,6 +15,7 @@ import hr.fer.edugame.ui.shared.helpers.calculatePointSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.calculatePoints
 import hr.fer.edugame.ui.shared.helpers.getConsonant
 import hr.fer.edugame.ui.shared.helpers.getLetters
+import hr.fer.edugame.ui.shared.helpers.getUser
 import hr.fer.edugame.ui.shared.helpers.getVowel
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
@@ -27,6 +29,7 @@ class LettersPresenter @Inject constructor(
     override val view: LettersView,
     private val preferenceStore: PreferenceStore,
     private val lettersGameInteractor: LettersGameInteractor,
+    private val rankInteractor: RankInteractor,
     private val rxSchedulers: RxSchedulers,
     private val wordsUtil: WordsUtil
 ) : BasePresenter(view) {
@@ -51,8 +54,8 @@ class LettersPresenter @Inject constructor(
             totalPoints = preferenceStore.singlePlayerPoints
             startSinglePlayer()
         } else {
+            totalPoints = preferenceStore.gamePoints
             if (preferenceStore.isInitiator && preferenceStore.opponentId.isNotEmpty()) {
-                totalPoints = preferenceStore.gamePoints
                 view.showChooseType()
             } else {
                 view.showOpponentTurnToChoose(givenLetters)
@@ -137,6 +140,8 @@ class LettersPresenter @Inject constructor(
             points = calculatePoints(result, opponentResult)
             totalPoints += points
             if (totalPoints > POINTS_TO_WIN) {
+                preferenceStore.multiplayerPoints ++
+                rankInteractor.savePoints(preferenceStore.getUser())
                 preferenceStore.gamePoints = START
                 lettersGameInteractor.declareWin()
                 view.hideProgress()

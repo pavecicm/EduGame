@@ -30,7 +30,8 @@ class RangListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = RankListAdapter(getSerializableArrayOrThrow<User>(EXTRA_USERS).toMutableList(), getSerializableOrThrow(EXTRA_TYPE))
+        val adapter = RankListAdapter(type = getSerializableOrThrow(EXTRA_TYPE))
+        adapter.updateItems(getSerializableArrayOrThrow<User>(EXTRA_USERS).toMutableList())
         rangList.adapter = adapter
     }
 }

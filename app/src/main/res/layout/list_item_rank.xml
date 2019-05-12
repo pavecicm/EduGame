@@ -5,11 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +19,7 @@
         <TextView
             android:id="@+id/username"
             style="@style/OpponentRankView"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
@@ -31,9 +27,14 @@
         <TextView
             android:id="@+id/points"
             style="@style/OpponentRankView"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/spacing_10x"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
 
 </LinearLayout>
