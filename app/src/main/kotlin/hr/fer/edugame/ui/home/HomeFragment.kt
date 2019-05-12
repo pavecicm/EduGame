@@ -8,10 +8,11 @@ import hr.fer.edugame.extensions.setThrottlingClickListener
 import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.listeners.HomeListener
-import kotlinx.android.synthetic.main.fragment_home.infoButton
+import kotlinx.android.synthetic.main.fragment_home.findOpponent
 import kotlinx.android.synthetic.main.fragment_home.lettersButton
+import kotlinx.android.synthetic.main.fragment_home.logoutBtn
 import kotlinx.android.synthetic.main.fragment_home.numbersButton
-import kotlinx.android.synthetic.main.fragment_home.settingsButton
+import kotlinx.android.synthetic.main.fragment_home.rankButton
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment(), HomeView {
@@ -39,20 +40,47 @@ class HomeFragment : BaseFragment(), HomeView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        presenter.init()
     }
 
     private fun initUI() {
-        infoButton.setThrottlingClickListener {
-            homeListener.onNavigateToInfo()
+        rankButton.setThrottlingClickListener {
+            homeListener.onNavigateToRankList()
         }
-        settingsButton.setThrottlingClickListener {
-            homeListener.onNavigateToSettings()
+        logoutBtn.setThrottlingClickListener {
+            presenter.logout()
         }
         numbersButton.setThrottlingClickListener {
-            homeListener.onNavigateToNumbers()
+            navigateToNumbers()
         }
         lettersButton.setThrottlingClickListener {
-            homeListener.onNavigateToLetters()
+            navigateToLetters()
         }
+        findOpponent.setThrottlingClickListener {
+            navigateToSearch()
+        }
+    }
+
+    fun navigateToNumbers() {
+        presenter.startSinglePlayer()
+        homeListener.onNavigateToNumbers()
+    }
+
+    fun navigateToLetters() {
+        presenter.startSinglePlayer()
+        homeListener.onNavigateToLetters()
+    }
+
+    fun navigateToSearch() {
+        presenter.startMultiplayer()
+        homeListener.onNavigateToSearch()
+    }
+
+    override fun logout() {
+        homeListener.onLogout()
+    }
+
+    override fun disableMultiplayer() {
+        findOpponent.isEnabled = false
     }
 }

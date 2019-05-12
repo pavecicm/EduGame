@@ -4,4 +4,8 @@ interface BaseView {
     fun showKeyboard()
     fun hideKeyboard()
     fun showLevelCompleted()
+    fun showProgress()
+    fun hideProgress()
+    fun showGameWon()
+    fun showGameLost()
 }

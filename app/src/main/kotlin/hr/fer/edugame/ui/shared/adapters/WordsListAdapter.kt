@@ -35,6 +35,15 @@ class WordsListAdapter(
         notifyDataSetChanged()
     }
 
+    fun getLongestWord(): String {
+        var word: String = ""
+        words.forEach {
+            if(word.length < it.length)
+                word = it
+        }
+        return word
+    }
+
     fun updateItem(word: String) {
         this.words.add(word)
         notifyDataSetChanged()

@@ -1,8 +1,7 @@
 package hr.fer.edugame.ui.shared.base
 
-import android.content.Context
+import android.app.AlertDialog
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
@@ -11,7 +10,9 @@ import dagger.android.support.DaggerAppCompatActivity
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.hideKeyboard
 import hr.fer.edugame.extensions.showKeyboard
+import hr.fer.edugame.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.toolbar.toolbar
+import javax.inject.Inject
 
 abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
@@ -20,8 +21,10 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     protected abstract fun providePresenter(): BasePresenter?
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    private var dialog: AlertDialog? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(layoutRes)
         setupToolbar()
     }
@@ -34,6 +37,11 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
         toolbar?.setNavigationOnClickListener { onNavigationIconClick() }
     }
 
+    protected fun setupToolbar(@StringRes titleRes: Int, @DrawableRes iconRes: Int = R.drawable.ic_arrow_left_navigation) {
+        setToolbarTitle(titleRes)
+        setToolbarIcon(iconRes)
+    }
+
     protected fun setToolbarTitle(@StringRes titleRes: Int) {
         toolbar?.setTitle(titleRes)
     }
@@ -44,6 +52,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     protected fun setToolbarIcon(@DrawableRes iconRes: Int) {
         toolbar?.setNavigationIcon(iconRes)
+        toolbar?.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     protected open fun onNavigationIconClick() {
@@ -52,5 +63,58 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     override fun showLevelCompleted() {
         Toast.makeText(this, String.format(getString(R.string.congrats), 45), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showProgress() {
+
+    }
+
+    override fun hideProgress() {
+
+    }
+
+
+    override fun showGameLost() {
+        dialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.game_lost)))
+            .setPositiveButton(getString(R.string.ok))
+            { _, _ ->
+                navigateToHome()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
+    }
+
+    override fun showGameWon() {
+        dialog = AlertDialog.Builder(this)
+            .setMessage(String.format(getString(R.string.game_won)))
+            .setPositiveButton(getString(R.string.ok))
+            { _, _ ->
+                navigateToHome()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
+    }
+
+    private fun navigateToHome() {
+        startActivity(LoginActivity.newInstance(this))
+    }
+
+    override fun finish() {
+        dialog?.let {
+            if (it.isShowing) {
+                it.cancel()
+            }
+        }
+        super.finish()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        providePresenter()?.cancel()
     }
 }

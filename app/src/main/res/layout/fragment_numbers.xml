@@ -11,6 +11,26 @@
         android:id="@+id/navigationLayout"
         layout="@layout/view_navigation"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigationLayout"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_0.5x"
+            android:indeterminate="false"
+            android:max="90"
+            tools:max="90"
+            tools:progress="20"/>
+    </FrameLayout>
+
     <TextView
         android:id="@+id/wantedNumber"
         style="@style/WantedNumber"
@@ -22,12 +42,12 @@
         />
 
     <android.support.v7.widget.RecyclerView
-        android:paddingTop="@dimen/spacing_1x"
         android:id="@+id/givenNumbersRecycle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/spacing_12x"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/spacing_1x"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/wantedNumber"/>
 
@@ -145,12 +165,12 @@
         android:id="@+id/usedOperationsRecycle"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:orientation="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/resetBtn"
-        app:layout_constraintTop_toBottomOf="@id/firstOperand"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:orientation="vertical"/>
+        app:layout_constraintTop_toBottomOf="@id/firstOperand"/>
 
     <TextView
         android:id="@+id/resetBtn"
@@ -163,5 +183,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ProgressBar
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

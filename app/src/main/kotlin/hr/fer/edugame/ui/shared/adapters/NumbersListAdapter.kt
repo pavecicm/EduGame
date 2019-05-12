@@ -9,7 +9,7 @@ import hr.fer.edugame.extensions.setThrottlingClickListener
 import kotlinx.android.synthetic.main.list_item_letter.view.letterButton
 
 class NumbersListAdapter(
-    var numbers: MutableList<Int>,
+    var numbers: MutableList<Int> = mutableListOf(),
     protected val onClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<NumbersListAdapter.NumberViewHolder>() {
 
@@ -19,7 +19,7 @@ class NumbersListAdapter(
 
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
         val number = numbers[position]
-        holder.bind(number)
+        holder.bind(number, position)
     }
 
     override fun getItemCount() = numbers.size
@@ -31,6 +31,7 @@ class NumbersListAdapter(
     }
 
     fun updateItems(numbers: List<Int>) {
+        this.numbers.clear()
         this.numbers.addAll(numbers)
         notifyDataSetChanged()
     }
@@ -40,17 +41,18 @@ class NumbersListAdapter(
         notifyDataSetChanged()
     }
 
-    fun destroyItem(number: Int) {
-        numbers.remove(number)
+    fun destroyItem(position: Int) {
+        numbers.removeAt(position)
         notifyDataSetChanged()
     }
 
     inner class NumberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(number: Int) {
+        fun bind(number: Int, position: Int) {
             with(itemView) {
                 letterButton.text = number.toString()
                 setThrottlingClickListener {
                     onClickListener(number.toString())
+                    destroyItem(position)
                 }
             }
         }

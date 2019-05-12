@@ -1,39 +1,103 @@
 package hr.fer.edugame.ui.numbers
 
-import hr.fer.edugame.extensions.random
+import hr.fer.edugame.constants.GAME_TURN_DURATION
+import hr.fer.edugame.constants.NO_CALCULATED_NUMBER
+import hr.fer.edugame.data.firebase.interactors.NumbersGameInteractor
+import hr.fer.edugame.data.rx.RxSchedulers
+import hr.fer.edugame.data.rx.applySchedulers
+import hr.fer.edugame.data.rx.subscribe
+import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.extensions.toOperationUI
 import hr.fer.edugame.ui.shared.base.BasePresenter
+import hr.fer.edugame.ui.shared.helpers.calculatePointsSinglePlayer
+import hr.fer.edugame.ui.shared.helpers.getNumbers
+import hr.fer.edugame.ui.shared.helpers.getWantedNumber
+import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val PLUS = "+"
 private const val MINUS = "-"
 private const val TIMES = "*"
 private const val DIVIDE = "/"
+const val POINTS_TO_WIN = 50
+const val START = 0
 
 class NumbersPresenter @Inject constructor(
-    override val view: NumbersView
+    override val view: NumbersView,
+    private val preferenceStore: PreferenceStore,
+    private val numbersGameInteractor: NumbersGameInteractor,
+    private val rxSchedulers: RxSchedulers
 ) : BasePresenter(view) {
 
     private val givenNumbers: MutableList<Int> = mutableListOf()
-    private var wantedNumber = 0
-    private var result: Int = 0
+    private var wantedNumber = -1
+    private var result: Int = START
+    private var opponentResult = NO_CALCULATED_NUMBER
+    private var points = START
+    private var totalPoints = START
+    private var isFinishClicked: Boolean = false
+
+    private val countdownObservable: Observable<Long> = Observable
+        .interval(0, 1, TimeUnit.SECONDS, rxSchedulers.backgroundThreadScheduler)
+        .map { GAME_TURN_DURATION - resumeCorrection - it }
+        .takeUntil { it <= 0 }
+
+    private var resumeCorrection = 0L
 
     fun init() {
-        wantedNumber = ((65..999).random())
-        givenNumbers.addAll(getNumbers(4))
-        view.startLevel(wantedNumber = wantedNumber, givenNumbers = givenNumbers)
+        if (preferenceStore.isSinglePlayerEnabled) {
+             totalPoints = preferenceStore.singlePlayerPoints
+            startSinglePlayer()
+        } else {
+            this.totalPoints = preferenceStore.gamePoints
+            numbersGameInteractor.resetCalculatedNumbers()
+            resetCache()
+            if (preferenceStore.opponentId.isNotEmpty() && preferenceStore.isInitiator) {
+                startMultiplayer()
+            } else {
+                numbersGameInteractor.listenForNumbers(this)
+            }
+            numbersGameInteractor.listenForOpponentResult(this)
+        }
     }
 
-    private fun getNumbers(count: Int): List<Int> {
-        val numbers: MutableList<Int> = mutableListOf()
-        for (i in 0..count) {
-            numbers.add(((1..100).random()))
+    fun startSinglePlayer() {
+        wantedNumber = getWantedNumber()
+        givenNumbers.clear()
+        givenNumbers.addAll(getNumbers(6))
+        displayNumbers()
+    }
+
+    fun startMultiplayer() {
+        startSinglePlayer()
+        numbersGameInteractor.setRandomNumbers(this, givenNumbers, wantedNumber)
+    }
+
+    fun setWantedNumber(wantedNumber: Int) {
+        resetCache()
+        this.wantedNumber = wantedNumber
+        if (givenNumbers.isNotEmpty()) {
+            displayNumbers()
         }
-        return numbers
+    }
+
+
+    fun setGivenNumbers(givenNumbers: List<Int>) {
+        resetCache()
+        this.givenNumbers.clear()
+        this.givenNumbers.addAll(givenNumbers)
+        if (wantedNumber != null && wantedNumber != -1) {
+            displayNumbers()
+        }
+    }
+
+    private fun displayNumbers() {
+        view.startLevel(totalPoints = totalPoints, wanted = wantedNumber, givenNumbers = givenNumbers)
     }
 
     fun reset() {
-        view.resetLevel(wantedNumber = wantedNumber, givenNumbers = givenNumbers)
+        view.resetLevel(wanted = wantedNumber, givenNumbers = givenNumbers)
     }
 
     fun handleOnCalculateClicked(first: Int, second: Int, operation: String) {
@@ -52,9 +116,75 @@ class NumbersPresenter @Inject constructor(
         }
 
     fun handleOoNextLevelClick() {
-        givenNumbers.clear()
-        givenNumbers.addAll(getNumbers(6))
-        wantedNumber = getNumbers(1).first()
-        view.navigateToNextLevel(wantedNumber, givenNumbers)
+        view.showProgress()
+        if (!preferenceStore.isSinglePlayerEnabled) {
+            numbersGameInteractor.finishRound(result)
+            isFinishClicked = true
+        }
+        calculatePoints()
+    }
+
+    fun onDestroy() {
+        numbersGameInteractor.destroyListeners()
+    }
+
+    fun saveOpponentResult(opponentResult: Int) {
+        if (this.opponentResult != opponentResult) {
+            this.opponentResult = opponentResult
+            calculatePoints()
+        }
+    }
+
+    fun calculatePoints() {
+        if (preferenceStore.isSinglePlayerEnabled) {
+            points = calculatePointsSinglePlayer(wantedNumber, result)
+            totalPoints += points
+            preferenceStore.singlePlayerPoints = totalPoints
+            view.hideProgress()
+            view.navigateToNextLevel(
+                points = points,
+                result = result
+            )
+        } else {
+            if (opponentResult != -1 && isFinishClicked) {
+                points = hr.fer.edugame.ui.shared.helpers.calculatePoints(wantedNumber, result, opponentResult)
+                totalPoints += points
+                if (totalPoints > POINTS_TO_WIN) {
+                    preferenceStore.gamePoints = 0
+                    numbersGameInteractor.declareWin()
+                    view.hideProgress()
+                    view.showGameWon()
+                } else {
+                    preferenceStore.gamePoints = totalPoints
+                    view.hideProgress()
+                    view.navigateToNextLevel(
+                        points = points,
+                        ownResult = result,
+                        opponentResult = this.opponentResult
+                    )
+                }
+            }
+        }
+    }
+
+    fun resetCache() {
+        result = START
+        opponentResult = NO_CALCULATED_NUMBER
+        isFinishClicked = false
+    }
+
+    fun handleOpponentWin() {
+        preferenceStore.gamePoints = START
+        numbersGameInteractor.removeGameRoom()
+        view.showGameLost()
+    }
+
+    fun startCountdown() {
+        countdownObservable
+            .applySchedulers(rxSchedulers)
+            .subscribe(this,
+                onNext = { view.updateProgress(it) },
+                onComplete = { handleOoNextLevelClick() }
+            )
     }
 }

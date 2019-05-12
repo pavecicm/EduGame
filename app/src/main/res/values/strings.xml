@@ -5,6 +5,7 @@
     <string name="letters">Slova</string>
     <string name="about_title">O aplikaciji</string>
     <string name="settings">Postavke</string>
+    <string name="find_user">Pronađi protivnika</string>
     <string name="about_text">...</string>
     <string name="close_text">X</string>
     <string name="save_text">✔</string>
@@ -12,7 +13,38 @@
     <string name="minus">-</string>
     <string name="times">*</string>
     <string name="divide">/</string>
+    <string name="points">Bodovi: %s</string>
     <string name="reset">Poništi</string>
     <string name="enter_all_data">Molimo unesite oba operanda te operaciju kako bi mogli izračunati novi broj!</string>
+    <string name="result_numbers">Vaš rezultat: %d\n Protivnikov rezultat: %d\n Osvojili ste %d bodova</string>
+    <string name="result_letters">Vaš rezultat: %s\n Protivnikov rezultat: %s\n Osvojili ste %d bodova</string>
+    <string name="result_numbers_single_player">Vaš rezultat: %d\n Osvojili ste %d bodova</string>
+    <string name="result_letters_single_player">Vaš rezultat: %s\n Osvojili ste %d bodova</string>
     <string name="congrats">Bravo, osvojili ste %s bodova</string>
+    <string name="enter_email">Unesite email</string>
+    <string name="enter_password">Unesite password</string>
+    <string name="enter_username">Unesite korisničko ime</string>
+    <string name="login">Prijavi se</string>
+    <string name="anonymous"><u>Igraj kao gost</u></string>
+    <string name="enter_google_account">Ulogirajte se pomoću google računa! Unesite email i password!</string>
+    <string name="username_error">Unesite username kako biste mogli igrati!</string>
+    <string name="invite_others">Pozovi protivnika</string>
+    <string name="invite_message">Korisnik %s vas je pozvao da zaigrate protiv njega!</string>
+    <string name="cancel">Odustani</string>
+    <string name="ok">U redu</string>
+    <string name="consoant">Suglasnik</string>
+    <string name="vowel">Samoglasnik</string>
+    <string name="please_choose">Vaš je red za biranje: samoglasnik ili suglasnik? Odaberite!</string>
+    <string name="opponent_choose">Protivnikov je red da bira tip slova! Pričekajte :)</string>
+    <string name="game_lost">Nažalost protivnik je bio bolji i pobijedio!</string>
+    <string name="game_won">*Bravo!*\nPobijedili ste!</string>
+    <string name="login_failed">Ups! Nešto je pošlo po zlu. Provjerite imate li interneta i jeste li unjeli točne podatke i
+        probajte ponovo!</string>
+    <string name="no_internet">Izgleda da niste spojeni na internet. Ako želite igrati protiv drugih igrača uključite internet i
+        ponovo se ulogirajte!</string>
+    <string name="no_such_word">Izgleda da ta riječ ne postoji u riječniku, probajte ponovo.</string>
+    <string name="call_refused">Protivnik je odbio vaš zahtjev za igrom! Pozovite nekog drugog!</string>
+    <string name="rang_list">Rang lista</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="singlePlayer">Single Player</string>
 </resources>

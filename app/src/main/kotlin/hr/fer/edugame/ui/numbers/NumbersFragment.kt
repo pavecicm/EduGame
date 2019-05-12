@@ -1,5 +1,7 @@
 package hr.fer.edugame.ui.numbers
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +11,7 @@ import hr.fer.edugame.ui.shared.adapters.NumbersListAdapter
 import hr.fer.edugame.ui.shared.adapters.OperationsListAdapter
 import hr.fer.edugame.ui.shared.base.BaseFragment
 import hr.fer.edugame.ui.shared.base.BasePresenter
+import hr.fer.edugame.ui.shared.listeners.HomeListener
 import kotlinx.android.synthetic.main.fragment_numbers.calculate
 import kotlinx.android.synthetic.main.fragment_numbers.destroyBtn
 import kotlinx.android.synthetic.main.fragment_numbers.divide
@@ -17,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_numbers.givenNumbersRecycle
 import kotlinx.android.synthetic.main.fragment_numbers.minus
 import kotlinx.android.synthetic.main.fragment_numbers.operator
 import kotlinx.android.synthetic.main.fragment_numbers.plus
+import kotlinx.android.synthetic.main.fragment_numbers.progressBar
 import kotlinx.android.synthetic.main.fragment_numbers.resetBtn
 import kotlinx.android.synthetic.main.fragment_numbers.secondOperand
 import kotlinx.android.synthetic.main.fragment_numbers.times
@@ -38,13 +42,28 @@ class NumbersFragment : BaseFragment(), NumbersView {
 
     @Inject
     lateinit var presenter: NumbersPresenter
+    private lateinit var homeListener: HomeListener
     lateinit var givenNumbersAdapter: NumbersListAdapter
     lateinit var operationsAdapter: OperationsListAdapter
+    private var dialog: AlertDialog? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is HomeListener) {
+            homeListener = context
+        } else {
+            throw RuntimeException(activity?.localClassName + " must implement " + HomeListener::class.java.name)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        givenNumbersAdapter = NumbersListAdapter {
+            onNumberClick(it)
+        }
         presenter.init()
+        presenter.startCountdown()
     }
 
     private fun initUI() {
@@ -121,12 +140,14 @@ class NumbersFragment : BaseFragment(), NumbersView {
         }
     }
 
-    override fun startLevel(wanted: Int, givenNumbers: List<Int>) {
-        wantedNumber.text = wanted.toString()
-        givenNumbersAdapter = NumbersListAdapter(givenNumbers.toMutableList()) {
-            onNumberClick(it)
+    override fun startLevel(totalPoints: Int, wanted: Int, givenNumbers: List<Int>) {
+        wantedNumber?.let {
+            wantedNumber.text = wanted.toString()
+            givenNumbersAdapter.updateItems(givenNumbers)
+            operationsAdapter.resetAdapter()
+            givenNumbersRecycle.adapter = givenNumbersAdapter
+            navigationTitle.text = String.format(getString(R.string.points), totalPoints.toString())
         }
-        givenNumbersRecycle.adapter = givenNumbersAdapter
     }
 
     override fun resetLevel(wanted: Int, givenNumbers: List<Int>) {
@@ -149,9 +170,30 @@ class NumbersFragment : BaseFragment(), NumbersView {
         operationsAdapter.updateItem(operation)
     }
 
-    override fun navigateToNextLevel(wanted: Int, numbers: List<Int>) {
-        Toast.makeText(context, String.format(getString(R.string.congrats), 45), Toast.LENGTH_SHORT).show()
-        resetLevel(wanted = wanted, givenNumbers = numbers)
+    override fun navigateToNextLevel(points: Int, ownResult: Int, opponentResult: Int) {
+        dialog = AlertDialog.Builder(requireContext())
+            .setMessage(String.format(getString(R.string.result_numbers), ownResult, opponentResult, points))
+            .setPositiveButton(R.string.ok)
+            { _, _ ->
+                homeListener.onNavigateToLetters()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
+    }
+
+    override fun navigateToNextLevel(points: Int, result: Int) {
+        dialog = AlertDialog.Builder(requireContext())
+            .setMessage(String.format(getString(R.string.result_numbers_single_player), result, points))
+            .setPositiveButton(R.string.ok)
+            { _, _ ->
+                homeListener.onNavigateToLetters()
+            }
+            .create()
+        dialog?.let {
+            it.show()
+        }
     }
 
     private fun onOperatorClick(operation: String) {
@@ -162,11 +204,10 @@ class NumbersFragment : BaseFragment(), NumbersView {
         if (firstOperand.text.isEmpty()) {
             firstOperand.text = number
         } else {
-            if(number.toInt() != 0) {
+            if (number.toInt() != 0) {
                 secondOperand.text = number
             }
         }
-        givenNumbersAdapter.destroyItem(number.toInt())
     }
 
     fun getFirstOperand(): Int? {
@@ -194,5 +235,23 @@ class NumbersFragment : BaseFragment(), NumbersView {
             Toast.makeText(context, R.string.enter_all_data, Toast.LENGTH_SHORT).show()
         }
         return null
+    }
+
+    override fun updateProgress(secondsRemaining: Long) {
+        progressBar.progress = secondsRemaining.toInt()
+    }
+
+    override fun onStop() {
+        dialog?.let {
+            if (it.isShowing) {
+                it.cancel()
+            }
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 }
