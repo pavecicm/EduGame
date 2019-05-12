@@ -2,7 +2,6 @@ package hr.fer.edugame.ui.letters
 
 import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.data.firebase.interactors.LettersGameInteractor
-import hr.fer.edugame.data.firebase.interactors.RankInteractor
 import hr.fer.edugame.data.rx.RxSchedulers
 import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe
@@ -69,14 +68,14 @@ class LettersPresenter @Inject constructor(
     }
 
     fun setNewLetter(type: LetterType) {
-        when(type) {
+        when (type) {
             LetterType.VOWEL -> {
                 givenLetters.add(getVowel().toString())
             }
             LetterType.CONSOANT -> givenLetters.add(getConsonant().toString())
         }
         lettersGameInteractor.setRandomLetters(this, givenLetters)
-        if(givenLetters.size == 9) {
+        if (givenLetters.size == 9) {
             view.displayLetters(totalPoints, givenLetters)
         } else {
             view.showOpponentTurnToChoose(givenLetters)
@@ -87,7 +86,7 @@ class LettersPresenter @Inject constructor(
         resetCache()
         givenLetters.clear()
         givenLetters.addAll(letters)
-        if(letters.size == 9) {
+        if (letters.size == 9) {
             view.displayLetters(totalPoints, givenLetters)
         } else {
             view.displayLettersAndChooseNext(givenLetters)
@@ -106,8 +105,7 @@ class LettersPresenter @Inject constructor(
             lettersGameInteractor.finishRound(result)
             isFinishClicked = true
         }
-        if (opponentResult.isNotEmpty())
-            calculatePoints()
+        calculatePoints()
     }
 
     fun onSaveClicked(word: String) {

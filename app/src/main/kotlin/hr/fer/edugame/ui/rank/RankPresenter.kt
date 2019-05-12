@@ -13,10 +13,12 @@ class RankPresenter @Inject constructor(
     private var rankList: List<User>? = null
 
     fun init() {
+        view.showProgress()
         rankInteractor.getRankList(this)
     }
 
     fun displayRankList(users: List<User>) {
+        view.hideProgress()
         rankList = users
         view.initViewPager(users)
     }

@@ -11,8 +11,8 @@ import hr.fer.edugame.R
 import hr.fer.edugame.extensions.hideKeyboard
 import hr.fer.edugame.extensions.showKeyboard
 import hr.fer.edugame.ui.login.LoginActivity
+import hr.fer.edugame.ui.shared.dialogs.LoadingDialog
 import kotlinx.android.synthetic.main.toolbar.toolbar
-import javax.inject.Inject
 
 abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
@@ -22,6 +22,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
     protected abstract fun providePresenter(): BasePresenter?
 
     private var dialog: AlertDialog? = null
+
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +68,17 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
     }
 
     override fun showProgress() {
-
+        if (loadingDialog?.isVisible != true) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.show(supportFragmentManager, "Loading dialog")
+        }
     }
 
     override fun hideProgress() {
-
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
     }
 
 
