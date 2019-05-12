@@ -37,6 +37,11 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
         toolbar?.setNavigationOnClickListener { onNavigationIconClick() }
     }
 
+    protected fun setupToolbar(@StringRes titleRes: Int, @DrawableRes iconRes: Int = R.drawable.ic_arrow_left_navigation) {
+        setToolbarTitle(titleRes)
+        setToolbarIcon(iconRes)
+    }
+
     protected fun setToolbarTitle(@StringRes titleRes: Int) {
         toolbar?.setTitle(titleRes)
     }
@@ -47,6 +52,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     protected fun setToolbarIcon(@DrawableRes iconRes: Int) {
         toolbar?.setNavigationIcon(iconRes)
+        toolbar?.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     protected open fun onNavigationIconClick() {

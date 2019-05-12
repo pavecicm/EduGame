@@ -5,24 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow">
+    android:background="@color/colorPrimary">
 
-    <ImageView
-        android:id="@id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_2.5x"
-        android:src="@drawable/ic_arrow_left_navigation"/>
-
-    <TextView
-        android:id="@+id/navigationTitle"
-        style="@style/GameHeadingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/find_user"
-        app:layout_constraintLeft_toRightOf="@id/backBtn"
-        app:layout_constraintRight_toLeftOf="@id/nextBtn"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/usersRecycle"
@@ -31,7 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/navigationTitle"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
     <FrameLayout
         android:id="@+id/progressLayout"

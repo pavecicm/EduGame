@@ -9,10 +9,9 @@ import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.replaceFragment
 import hr.fer.edugame.ui.home.HomeFragment
-import hr.fer.edugame.ui.home.info.InfoFragment
 import hr.fer.edugame.ui.letters.LettersFragment
 import hr.fer.edugame.ui.numbers.NumbersFragment
-import hr.fer.edugame.ui.rank.RankListFragment
+import hr.fer.edugame.ui.rank.RankFragment
 import hr.fer.edugame.ui.search.SearchUserActivity
 import hr.fer.edugame.ui.shared.base.BaseActivity
 import hr.fer.edugame.ui.shared.listeners.HomeListener
@@ -81,7 +80,7 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
 
     override fun onNavigateToRankList() {
         replaceFragment(
-            RankListFragment.newInstance(),
+            RankFragment.newInstance(),
             R.id.fragmentContainer,
             addToBackStack = true,
             rootTag = BACK_STACK_ROOT_TAG,

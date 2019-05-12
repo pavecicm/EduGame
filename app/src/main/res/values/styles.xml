@@ -118,7 +118,14 @@
         <item name="android:textSize">20sp</item>
         <item name="android:padding">@dimen/spacing_1.25x</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
+    <style name="BaseTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
     </style>
 
 </resources>

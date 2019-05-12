@@ -5,8 +5,8 @@ import hr.fer.edugame.data.models.User
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import javax.inject.Inject
 
-class RankListPresenter @Inject constructor(
-    override val view: RankListView,
+class RankPresenter @Inject constructor(
+    override val view: RankView,
     private val rankInteractor: RankInteractor
 ) : BasePresenter(view) {
 
@@ -18,18 +18,6 @@ class RankListPresenter @Inject constructor(
 
     fun displayRankList(users: List<User>) {
         rankList = users
-        handleShowMulptiplayerRank()
-    }
-
-    fun handleShowSinglePlayerRank() {
-        rankList?.let {
-            view.showSinglePlayerRank(it)
-        }
-    }
-
-    fun handleShowMulptiplayerRank() {
-        rankList?.let {
-            view.showMultiplayerRank(it)
-        }
+        view.initViewPager(users)
     }
 }

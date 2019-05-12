@@ -10,13 +10,12 @@ import hr.fer.edugame.R
 import hr.fer.edugame.data.models.User
 import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.intentFor
-import hr.fer.edugame.extensions.setThrottlingClickListener
 import hr.fer.edugame.extensions.show
 import hr.fer.edugame.ui.shared.adapters.OpponentsAdapter
 import hr.fer.edugame.ui.shared.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_search_user.backBtn
 import kotlinx.android.synthetic.main.activity_search_user.progressLayout
 import kotlinx.android.synthetic.main.activity_search_user.usersRecycle
+import kotlinx.android.synthetic.main.toolbar.toolbar
 import javax.inject.Inject
 
 class SearchUserActivity : BaseActivity(), SearchUserView {
@@ -42,9 +41,8 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
     }
 
     fun initUI() {
-        backBtn.setThrottlingClickListener {
-            onBackPressed()
-        }
+        setupToolbar(R.string.find_user)
+        toolbar.setTitle(R.string.find_user)
         adapter = OpponentsAdapter {
             presenter.callPlayer(it)
         }
