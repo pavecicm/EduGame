@@ -5,25 +5,20 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
-import hr.fer.edugame.extensions.hide
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.setThrottlingClickListener
-import hr.fer.edugame.extensions.show
 import hr.fer.edugame.ui.main.MainActivity
 import hr.fer.edugame.ui.shared.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.anonymous
 import kotlinx.android.synthetic.main.activity_login.email
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.password
-import kotlinx.android.synthetic.main.activity_login.progressLayout
 import kotlinx.android.synthetic.main.activity_login.username
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), LoginView {
 
     companion object {
-        const val EXTRA_USER = "EXTRA_USER"
-
         fun newInstance(context: Context) = context.intentFor<LoginActivity>()
     }
 
@@ -45,14 +40,14 @@ class LoginActivity : BaseActivity(), LoginView {
 
     fun initUI() {
         loginBtn.setThrottlingClickListener {
-            if(username.text.isNullOrEmpty()) {
+            if (username.text.isNullOrEmpty()) {
                 username.error = getString(R.string.username_error)
             } else {
                 presenter.loginToFirebase(this, username.text.toString(), email.text.toString(), password.text.toString())
             }
         }
         anonymous.setThrottlingClickListener {
-            if(username.text.isNullOrEmpty()) {
+            if (username.text.isNullOrEmpty()) {
                 username.error = getString(R.string.username_error)
             } else {
                 presenter.continueAsAnonymous(username.text.toString())
@@ -77,15 +72,15 @@ class LoginActivity : BaseActivity(), LoginView {
         Toast.makeText(applicationContext, getString(R.string.login_failed), Toast.LENGTH_LONG).show()
     }
 
-    override fun showProgress() {
-        loginBtn.isEnabled = false
-        anonymous.isEnabled = false
-        progressLayout.show()
-    }
+//    override fun showProgress() {
+//        loginBtn.isEnabled = false
+//        anonymous.isEnabled = false
+//        progressLayout.show()
+//    }
 
-    override fun hideProgress() {
-        loginBtn.isEnabled = true
-        anonymous.isEnabled = true
-        progressLayout.hide()
-    }
+//    override fun hideProgress() {
+//        loginBtn.isEnabled = true
+//        anonymous.isEnabled = true
+//        progressLayout.hide()
+//    }
 }
