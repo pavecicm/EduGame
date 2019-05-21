@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.replaceFragment

@@ -1,6 +1,7 @@
 package hr.fer.edugame.ui.login
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import javax.inject.Inject
@@ -17,6 +18,9 @@ class LoginPresenter @Inject constructor(
             preferenceStore.hasInternet = true
             view.navigateToHome()
         }
+        if(preferenceStore.isUserLogedIn) {
+            view.navigateToHome()
+        }
     }
 
     fun continueAsAnonymous(username: String) {
@@ -27,6 +31,9 @@ class LoginPresenter @Inject constructor(
                 view.hideProgress()
                 if (task.isSuccessful) {
                     preferenceStore.hasInternet = true
+                    preferenceStore.isUserLogedIn = true
+                    preferenceStore.singlePlayerPoints = 0
+                    preferenceStore.multiplayerPoints = 0
                     var currentUser = auth.currentUser
                     preferenceStore.currentUserID = currentUser!!.uid
                     preferenceStore.username = username
@@ -40,7 +47,19 @@ class LoginPresenter @Inject constructor(
 
     fun signIn(username: String) {
         if (username == preferenceStore.username) {
-            view.navigateToHome()
+            auth.signInAnonymously()
+                .addOnCompleteListener {task ->
+                    if (task.isSuccessful) {
+                        preferenceStore.hasInternet = true
+                        preferenceStore.isUserLogedIn = true
+                        preferenceStore.username = username
+                        view.navigateToHome()
+
+                    } else {
+                        preferenceStore.hasInternet = false
+                        view.navigateToHomeNoInternet()
+                    }
+                }
         } else {
             continueAsAnonymous(username)
         }

@@ -5,4 +5,5 @@ import hr.fer.edugame.ui.shared.base.BaseView
 interface HomeView: BaseView {
     fun logout()
     fun disableMultiplayer()
+    fun navigateToRang()
 }

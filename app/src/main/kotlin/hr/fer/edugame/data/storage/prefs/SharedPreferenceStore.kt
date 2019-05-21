@@ -63,6 +63,18 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
             sharedPreferences[PreferenceStore.Constants.KEY_INTERNET] = value
         }
 
+    override var isUserLogedIn: Boolean
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_USER_LOGGED_IN] ?: false
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_USER_LOGGED_IN] = value
+        }
+
+    override var customToken: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_CUSTOM_TOKEN] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_CUSTOM_TOKEN] = value
+        }
+
     override fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     operator fun SharedPreferences.set(key: String, value: Any?) {

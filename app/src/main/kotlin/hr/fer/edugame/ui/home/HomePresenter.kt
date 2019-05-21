@@ -20,7 +20,7 @@ class HomePresenter @Inject constructor(
 
     fun logout() {
         auth.signOut()
-        preferenceStore.currentUserID = ""
+        preferenceStore.isUserLogedIn = false
         preferenceStore.isInitiator = false
         preferenceStore.opponentId = ""
         view.logout()
@@ -32,5 +32,11 @@ class HomePresenter @Inject constructor(
 
     fun startMultiplayer() {
         preferenceStore.isSinglePlayerEnabled = false
+    }
+
+    fun navigateToRang() {
+        if(preferenceStore.hasInternet) {
+            view.navigateToRang()
+        }
     }
 }

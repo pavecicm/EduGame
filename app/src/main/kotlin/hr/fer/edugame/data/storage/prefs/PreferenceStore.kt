@@ -11,6 +11,8 @@ interface PreferenceStore {
     var singlePlayerPoints: Int
     var multiplayerPoints: Int
     var hasInternet: Boolean
+    var isUserLogedIn: Boolean
+    var customToken: String
 
     fun contains(key: String): Boolean
 
@@ -24,5 +26,7 @@ interface PreferenceStore {
         const val KEY_SINGLE_PLAYER_POINTS = "KEY_SINGLE_PLAYER_POINTS"
         const val KEY_MUPLTIPLAYER_POINTS = "KEY_MUPLTIPLAYER_POINTS"
         const val KEY_INTERNET = "KEY_INTERNET"
+        const val KEY_USER_LOGGED_IN = "KEY_USER_LOGGED_IN"
+        const val KEY_CUSTOM_TOKEN = "KEY_CUSTOM_TOKEN"
     }
 }
