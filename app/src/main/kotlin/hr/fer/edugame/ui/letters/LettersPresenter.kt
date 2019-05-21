@@ -151,7 +151,7 @@ class LettersPresenter @Inject constructor(
                 view.hideProgress()
                 view.navigateToNextLevel(
                     points = points,
-                    ownResult = result,
+                    ownResult = if(result != EMPTY_WORD) result else "",
                     opponentResult = this.opponentResult
                 )
             }
