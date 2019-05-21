@@ -7,7 +7,6 @@ import java.io.Serializable
 
 class User(
     var id: String = "",
-    var email: String? = "",
     var username: String? = "",
     var singlePlayerPoints: Int? = 0,
     var multiplayerPoints: Int? = 0
@@ -25,7 +24,6 @@ class User(
     constructor(source: Parcel): this() {
         with(source) {
             id = readString() ?: ""
-            email = readString() ?: ""
             username = readString() ?: ""
         }
     }
