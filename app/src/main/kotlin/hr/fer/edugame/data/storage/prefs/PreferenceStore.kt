@@ -5,7 +5,6 @@ interface PreferenceStore {
     var currentUserID: String
     var opponentId: String
     var isInitiator: Boolean
-    var email: String
     var username: String
     var gamePoints: Int
     var isSinglePlayerEnabled: Boolean
@@ -19,7 +18,6 @@ interface PreferenceStore {
         const val KEY_USER = "KEY_USER"
         const val KEY_OPPONENT = "KEY_OPPONENT"
         const val KEY_INITIATOR = "KEY_INITIATOR"
-        const val KEY_EMAIL = "KEY_EMAIL"
         const val KEY_USERNAME = "KEY_USERNAME"
         const val KEY_GAME_POINTS = "KEY_GAME_POINTS"
         const val KEY_SINGLE_PLAYER = "KEY_SINGLE_PLAYER"

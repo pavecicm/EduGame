@@ -23,7 +23,6 @@ class HomePresenter @Inject constructor(
         preferenceStore.currentUserID = ""
         preferenceStore.isInitiator = false
         preferenceStore.opponentId = ""
-        preferenceStore.email = ""
         view.logout()
     }
 

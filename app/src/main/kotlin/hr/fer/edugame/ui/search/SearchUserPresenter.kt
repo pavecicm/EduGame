@@ -18,7 +18,7 @@ class SearchUserPresenter @Inject constructor(
     private lateinit var currentUser: User
 
     fun init() {
-        currentUser = User(preferenceStore.currentUserID, preferenceStore.email, preferenceStore.username)
+        currentUser = User(preferenceStore.currentUserID, preferenceStore.username)
     }
 
     fun addUserToOnlineUser(user: User) = searchOpponentInteractor.addUser(user)
