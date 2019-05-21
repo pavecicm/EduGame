@@ -1,7 +1,6 @@
 package hr.fer.edugame.ui.login
 
 import com.google.firebase.auth.FirebaseAuth
-import hr.fer.edugame.data.firebase.FirebaseDatabaseManager
 import hr.fer.edugame.data.storage.prefs.PreferenceStore
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import javax.inject.Inject
@@ -9,7 +8,6 @@ import javax.inject.Inject
 class LoginPresenter @Inject constructor(
     override val view: LoginView,
     private val auth: FirebaseAuth,
-    private val firebaseDatabaseManager: FirebaseDatabaseManager,
     private val preferenceStore: PreferenceStore
 ) : BasePresenter(view) {
 
@@ -17,7 +15,7 @@ class LoginPresenter @Inject constructor(
         preferenceStore.gamePoints = 0
         auth.currentUser?.let {
             preferenceStore.hasInternet = true
-            view.navigateToHome(it)
+            view.navigateToHome()
         }
     }
 
@@ -32,13 +30,19 @@ class LoginPresenter @Inject constructor(
                     var currentUser = auth.currentUser
                     preferenceStore.currentUserID = currentUser!!.uid
                     preferenceStore.username = username
-                    currentUser?.let {
-                        view.navigateToHome(it)
-                    }
+                    view.navigateToHome()
                 } else {
                     preferenceStore.hasInternet = false
                     view.navigateToHomeNoInternet()
                 }
             }
+    }
+
+    fun signIn(username: String) {
+        if (username == preferenceStore.username) {
+            view.navigateToHome()
+        } else {
+            continueAsAnonymous(username)
+        }
     }
 }

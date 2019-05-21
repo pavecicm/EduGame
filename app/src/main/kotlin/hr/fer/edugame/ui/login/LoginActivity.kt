@@ -3,7 +3,6 @@ package hr.fer.edugame.ui.login
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.setThrottlingClickListener
@@ -40,13 +39,13 @@ class LoginActivity : BaseActivity(), LoginView {
             if (username.text.isNullOrEmpty()) {
                 username.error = getString(R.string.username_error)
             } else {
-                presenter.continueAsAnonymous(username.text.toString())
+                presenter.signIn(username.text.toString())
             }
         }
     }
 
-    override fun navigateToHome(user: FirebaseUser) {
-        startActivity(MainActivity.newInstance(this, user))
+    override fun navigateToHome() {
+        startActivity(MainActivity.newInstance(this))
     }
 
     override fun navigateToHomeNoInternet() {
