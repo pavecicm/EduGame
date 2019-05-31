@@ -85,6 +85,7 @@ class SearchUserActivity : BaseActivity(), SearchUserView {
                 .setNegativeButton(String.format(getString(R.string.cancel), id)) { _, _ -> presenter.declineCall(id) }
                 .create()
             dialog?.let {
+                it.setCancelable(false)
                 it.show()
             }
         } catch (e: Exception) {
