@@ -51,9 +51,11 @@ class LettersPresenter @Inject constructor(
     fun init() {
         resetCache()
         if (preferenceStore.isSinglePlayerEnabled) {
+            view.setGoBack(true)
             totalPoints = preferenceStore.singlePlayerPoints
             startSinglePlayer()
         } else {
+            view.setGoBack(false)
             totalPoints = preferenceStore.gamePoints
             if (preferenceStore.isInitiator && preferenceStore.opponentId.isNotEmpty()) {
                 view.showChooseType()
@@ -112,13 +114,13 @@ class LettersPresenter @Inject constructor(
     }
 
     fun onSaveClicked(word: String) {
-        view.showProgress()
+//        view.showProgress()
         if (wordsUtil.checkIfWordExists(word)) {
             view.saveWord(word)
         } else {
             view.showNoSuchWord()
         }
-        view.hideProgress()
+//        view.hideProgress()
     }
 
     fun saveOpponentResult(opponentResult: String) {
@@ -152,7 +154,7 @@ class LettersPresenter @Inject constructor(
                 view.navigateToNextLevel(
                     points = points,
                     ownResult = if(result != EMPTY_WORD) result else "",
-                    opponentResult = this.opponentResult
+                    opponentResult = if(this.opponentResult != EMPTY_WORD) this.opponentResult else ""
                 )
             }
         }

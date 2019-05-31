@@ -50,9 +50,11 @@ class NumbersPresenter @Inject constructor(
 
     fun init() {
         if (preferenceStore.isSinglePlayerEnabled) {
-             totalPoints = preferenceStore.singlePlayerPoints
+            view.setGoBack(true)
+            totalPoints = preferenceStore.singlePlayerPoints
             startSinglePlayer()
         } else {
+            view.setGoBack(false)
             this.totalPoints = preferenceStore.gamePoints
             numbersGameInteractor.resetCalculatedNumbers()
             resetCache()

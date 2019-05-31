@@ -7,4 +7,5 @@ interface HomeListener {
     fun onNavigateToRankList()
     fun onNavigateToSearch()
     fun onLogout()
+    fun goBack(goBack: Boolean)
 }

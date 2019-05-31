@@ -100,4 +100,8 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
         presenter.onFinish()
         super.finish()
     }
+
+    override fun goBack(goBack: Boolean) {
+        this.goBack = goBack
+    }
 }

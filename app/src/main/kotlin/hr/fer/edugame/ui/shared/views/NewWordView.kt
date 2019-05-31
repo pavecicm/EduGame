@@ -58,7 +58,7 @@ class NewWordView @JvmOverloads constructor(
         deleteBtn.setOnClickListener {
             if (currentWordList.isNotEmpty()) {
                 lettersAdapter.setItemClickable(currentWordList.last())
-                currentWordList.dropLast(1)
+                currentWordList.removeAt(currentWordList.size - 1)
                 newWordContainer.removeViewAt(currentWordList.size)
             }
         }

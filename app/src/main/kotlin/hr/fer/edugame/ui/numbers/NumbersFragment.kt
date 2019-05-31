@@ -179,6 +179,7 @@ class NumbersFragment : BaseFragment(), NumbersView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -191,7 +192,9 @@ class NumbersFragment : BaseFragment(), NumbersView {
                 homeListener.onNavigateToLetters()
             }
             .create()
+
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -253,5 +256,9 @@ class NumbersFragment : BaseFragment(), NumbersView {
     override fun onDestroy() {
         presenter.onDestroy()
         super.onDestroy()
+    }
+
+    override fun setGoBack(goBack: Boolean) {
+        homeListener.goBack(goBack)
     }
 }
