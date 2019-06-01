@@ -116,12 +116,16 @@ class NumbersFragment : BaseFragment(), NumbersView {
 
     private fun setOnOperandClickListener() {
         firstOperand.setThrottlingClickListener {
-            givenNumbersAdapter.updateItem(firstOperand.text.toString().toInt())
-            firstOperand.text = ""
+            if(firstOperand.text.isNotEmpty()) {
+                givenNumbersAdapter.updateItem(firstOperand.text.toString().toInt())
+                firstOperand.text = ""
+            }
         }
         secondOperand.setThrottlingClickListener {
-            givenNumbersAdapter.updateItem(secondOperand.text.toString().toInt())
-            secondOperand.text = ""
+            if(secondOperand.text.isNotEmpty()) {
+                givenNumbersAdapter.updateItem(secondOperand.text.toString().toInt())
+                secondOperand.text = ""
+            }
         }
     }
 
