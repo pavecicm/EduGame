@@ -42,7 +42,11 @@ class NumbersPresenter @Inject constructor(
     private var isFinishClicked: Boolean = false
 
     private val countdownObservable: Observable<Long> = Observable
-        .interval(0, 1, TimeUnit.SECONDS, rxSchedulers.backgroundThreadScheduler)
+        .interval(
+            0,
+            1,
+            TimeUnit.SECONDS,
+            rxSchedulers.backgroundThreadScheduler)
         .map { GAME_TURN_DURATION - resumeCorrection - it }
         .takeUntil { it <= 0 }
 
