@@ -25,6 +25,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
 
     private var loadingDialog: LoadingDialog? = null
 
+    open var goBack = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
@@ -91,6 +93,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -104,6 +107,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -124,5 +128,11 @@ abstract class BaseActivity : DaggerAppCompatActivity(), BaseView {
     override fun onStop() {
         super.onStop()
         providePresenter()?.cancel()
+    }
+
+    override fun onBackPressed() {
+        if (goBack) {
+            super.onBackPressed()
+        }
     }
 }

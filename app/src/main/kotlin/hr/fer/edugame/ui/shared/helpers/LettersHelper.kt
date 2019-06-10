@@ -69,7 +69,9 @@ fun turnInGameLetter(random: Int): Char =
 fun calculatePoints(ownResult: String, opponentResult: String): Int {
     val own = ownResult.length
     val opponent = opponentResult.length
-    return if (own == 0 || own == opponent || own < opponent) {
+    return if ((opponentResult == EMPTY_WORD || own == 9) && own != opponent) {
+        12
+    } else if (own == 0 || own == opponent || own < opponent) {
         0
     } else if (opponentResult == EMPTY_WORD || own == 9) {
         12

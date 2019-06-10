@@ -13,4 +13,5 @@ interface LettersView : BaseView {
     fun showNoSuchWord()
     fun showChooseType()
     fun showOpponentTurnToChoose(letters: List<String>)
+    fun setGoBack(goBack: Boolean)
 }

@@ -116,12 +116,16 @@ class NumbersFragment : BaseFragment(), NumbersView {
 
     private fun setOnOperandClickListener() {
         firstOperand.setThrottlingClickListener {
-            givenNumbersAdapter.updateItem(firstOperand.text.toString().toInt())
-            firstOperand.text = ""
+            if(firstOperand.text.isNotEmpty()) {
+                givenNumbersAdapter.updateItem(firstOperand.text.toString().toInt())
+                firstOperand.text = ""
+            }
         }
         secondOperand.setThrottlingClickListener {
-            givenNumbersAdapter.updateItem(secondOperand.text.toString().toInt())
-            secondOperand.text = ""
+            if(secondOperand.text.isNotEmpty()) {
+                givenNumbersAdapter.updateItem(secondOperand.text.toString().toInt())
+                secondOperand.text = ""
+            }
         }
     }
 
@@ -179,6 +183,7 @@ class NumbersFragment : BaseFragment(), NumbersView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -191,7 +196,9 @@ class NumbersFragment : BaseFragment(), NumbersView {
                 homeListener.onNavigateToLetters()
             }
             .create()
+
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -253,5 +260,9 @@ class NumbersFragment : BaseFragment(), NumbersView {
     override fun onDestroy() {
         presenter.onDestroy()
         super.onDestroy()
+    }
+
+    override fun setGoBack(goBack: Boolean) {
+        homeListener.goBack(goBack)
     }
 }

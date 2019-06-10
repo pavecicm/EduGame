@@ -30,14 +30,14 @@ class RankListAdapter(
 
     fun updateItems(users: List<User>) {
         this.users.clear()
-        users.sortedBy {
+        val temp = users.sortedByDescending {
             if (type == PointsType.MULTIPLAYER) {
                 it.multiplayerPoints
             } else {
                 it.singlePlayerPoints
             }
         }
-        this.users.addAll(users)
+        this.users.addAll(temp)
         notifyDataSetChanged()
     }
 

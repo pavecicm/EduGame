@@ -34,7 +34,6 @@ class RankInteractor @Inject constructor(
                             users.add(user)
                         }
                     }
-
                     presenter.displayRankList(users.toList())
                 }
             }

@@ -19,6 +19,7 @@
     <color name="green">#68b711</color>
     <color name="vertical_divider">#f4f3f3</color>
     <color name="indigo">#4b0082</color>
+    <color name="indigo_disabled">#4D4B0085</color>
     <color name="red">#d40c0c</color>
     <color name="blue">#145aca</color>
     <color name="light_blue">#6e95d4</color>

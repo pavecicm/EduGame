@@ -38,55 +38,29 @@
             android:textSize="20sp"/>
 
         <EditText
-            android:id="@+id/username"
-            style="@style/EnterEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_6x"
-            android:hint="@string/enter_username"
-            android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@id/password"
-            app:layout_constraintTop_toBottomOf="@id/appTitle"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/email"
+                android:id="@+id/username"
                 style="@style/EnterEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_6x"
-                android:hint="@string/enter_email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintBottom_toTopOf="@id/password"
+                android:hint="@string/enter_username"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/appTitle"/>
 
-            <FrameLayout
-                android:id="@+id/progressLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <ProgressBar
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
-                    android:layout_gravity="center"/>
-            </FrameLayout>
-
-        </FrameLayout>
-
-        <EditText
-            android:id="@+id/password"
-            style="@style/EnterEditText"
+        <FrameLayout
+            android:id="@+id/progressLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_4x"
-            android:hint="@string/enter_password"
-            android:inputType="textPassword"
-            app:layout_constraintTop_toBottomOf="@id/email"/>
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -99,13 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"/>
-
-        <TextView
-            android:id="@+id/anonymous"
-            style="@style/SimpleLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/anonymous"/>
 
     </LinearLayout>
 </ScrollView>

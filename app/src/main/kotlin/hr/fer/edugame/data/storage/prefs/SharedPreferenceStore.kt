@@ -27,12 +27,6 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
             sharedPreferences[PreferenceStore.Constants.KEY_INITIATOR] = value
         }
 
-    override var email: String
-        get() = sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] ?: ""
-        set(value) {
-            sharedPreferences[PreferenceStore.Constants.KEY_EMAIL] = value
-        }
-
     override var username: String
         get() = sharedPreferences[PreferenceStore.Constants.KEY_USERNAME] ?: ""
         set(value) {
@@ -67,6 +61,18 @@ class SharedPreferenceStore(context: Context) : PreferenceStore {
         get() = sharedPreferences[PreferenceStore.Constants.KEY_INTERNET] ?: true
         set(value) {
             sharedPreferences[PreferenceStore.Constants.KEY_INTERNET] = value
+        }
+
+    override var isUserLogedIn: Boolean
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_USER_LOGGED_IN] ?: false
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_USER_LOGGED_IN] = value
+        }
+
+    override var customToken: String
+        get() = sharedPreferences[PreferenceStore.Constants.KEY_CUSTOM_TOKEN] ?: ""
+        set(value) {
+            sharedPreferences[PreferenceStore.Constants.KEY_CUSTOM_TOKEN] = value
         }
 
     override fun contains(key: String): Boolean = sharedPreferences.contains(key)

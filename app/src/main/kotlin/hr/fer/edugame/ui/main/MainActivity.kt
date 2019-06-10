@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseUser
 import hr.fer.edugame.R
 import hr.fer.edugame.extensions.intentFor
 import hr.fer.edugame.extensions.replaceFragment
@@ -22,12 +21,7 @@ private const val BACK_STACK_ROOT_TAG = "root_fragment"
 class MainActivity : BaseActivity(), HomeListener, MainView {
 
     companion object {
-        const val EXTRA_USER = "EXTRA_USER"
         const val REQUEST_CODE_SEARCH = 98
-
-        fun newInstance(context: Context, currentUser: FirebaseUser) = context.intentFor<MainActivity>(
-            EXTRA_USER to currentUser
-        )
 
         fun newInstance(context: Context) = context.intentFor<MainActivity>()
     }
@@ -105,5 +99,9 @@ class MainActivity : BaseActivity(), HomeListener, MainView {
     override fun finish() {
         presenter.onFinish()
         super.finish()
+    }
+
+    override fun goBack(goBack: Boolean) {
+        this.goBack = goBack
     }
 }

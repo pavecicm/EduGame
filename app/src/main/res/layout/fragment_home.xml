@@ -29,12 +29,11 @@
 
     <ImageView
         android:id="@+id/rankButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="@dimen/spacing_3x"
         android:layout_marginTop="@dimen/spacing_3x"
-        android:layout_marginEnd="@dimen/spacing_1x"
-        android:src="@drawable/ic_info_black"
+        android:src="@drawable/ic_format_list_numbered_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

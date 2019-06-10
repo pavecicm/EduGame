@@ -82,7 +82,7 @@ class LettersFragment : BaseFragment(), LettersView {
     }
 
     override fun showOpponentTurnToChoose(letters: List<String>) {
-        showProgress()
+        progressLayout.show()
         infoText.text = getString(R.string.opponent_choose)
         newWordView.resetLettersList(letters)
         chooserLayout.hide()
@@ -93,7 +93,7 @@ class LettersFragment : BaseFragment(), LettersView {
         infoText.hide()
         chooserLayout.hide()
         wordsList.show()
-        hideProgress()
+        progressLayout.hide()
         navigationTitle.text = String.format(getString(R.string.points), points)
         newWordView.resetLettersList(letters)
         presenter.startCountdown()
@@ -101,7 +101,7 @@ class LettersFragment : BaseFragment(), LettersView {
     }
 
     override fun displayLettersAndChooseNext(letters: List<String>) {
-        hideProgress()
+        progressLayout.hide()
         infoText.text = getString(R.string.please_choose)
         chooserLayout.show()
         newWordView.resetLettersList(letters)
@@ -129,6 +129,7 @@ class LettersFragment : BaseFragment(), LettersView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -142,6 +143,7 @@ class LettersFragment : BaseFragment(), LettersView {
             }
             .create()
         dialog?.let {
+            it.setCancelable(false)
             it.show()
         }
     }
@@ -166,11 +168,7 @@ class LettersFragment : BaseFragment(), LettersView {
         super.onDestroy()
     }
 
-//    override fun showProgress() {
-//        progressLayout.show()
-//    }
-
-//    override fun hideProgress() {
-//        progressLayout.hide()
-//    }
+    override fun setGoBack(goBack: Boolean) {
+        homeListener.goBack(goBack)
+    }
 }

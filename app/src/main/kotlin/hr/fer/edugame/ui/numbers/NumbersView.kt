@@ -17,4 +17,5 @@ interface NumbersView : BaseView {
         result: Int
     )
     fun updateProgress(secondsRemaining: Long)
+    fun setGoBack(goBack: Boolean)
 }

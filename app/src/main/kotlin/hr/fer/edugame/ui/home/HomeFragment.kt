@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment(), HomeView {
 
     private fun initUI() {
         rankButton.setThrottlingClickListener {
-            homeListener.onNavigateToRankList()
+            presenter.navigateToRang()
         }
         logoutBtn.setThrottlingClickListener {
             presenter.logout()
@@ -82,5 +82,9 @@ class HomeFragment : BaseFragment(), HomeView {
 
     override fun disableMultiplayer() {
         findOpponent.isEnabled = false
+    }
+
+    override fun navigateToRang() {
+        homeListener.onNavigateToRankList()
     }
 }

@@ -3,6 +3,7 @@ package hr.fer.edugame.ui.numbers
 import hr.fer.edugame.constants.GAME_TURN_DURATION
 import hr.fer.edugame.constants.NO_CALCULATED_NUMBER
 import hr.fer.edugame.data.firebase.interactors.NumbersGameInteractor
+import hr.fer.edugame.data.firebase.interactors.RankInteractor
 import hr.fer.edugame.data.rx.RxSchedulers
 import hr.fer.edugame.data.rx.applySchedulers
 import hr.fer.edugame.data.rx.subscribe
@@ -11,6 +12,7 @@ import hr.fer.edugame.extensions.toOperationUI
 import hr.fer.edugame.ui.shared.base.BasePresenter
 import hr.fer.edugame.ui.shared.helpers.calculatePointsSinglePlayer
 import hr.fer.edugame.ui.shared.helpers.getNumbers
+import hr.fer.edugame.ui.shared.helpers.getUser
 import hr.fer.edugame.ui.shared.helpers.getWantedNumber
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
@@ -27,6 +29,7 @@ class NumbersPresenter @Inject constructor(
     override val view: NumbersView,
     private val preferenceStore: PreferenceStore,
     private val numbersGameInteractor: NumbersGameInteractor,
+    private val rankInteractor: RankInteractor,
     private val rxSchedulers: RxSchedulers
 ) : BasePresenter(view) {
 
@@ -39,7 +42,11 @@ class NumbersPresenter @Inject constructor(
     private var isFinishClicked: Boolean = false
 
     private val countdownObservable: Observable<Long> = Observable
-        .interval(0, 1, TimeUnit.SECONDS, rxSchedulers.backgroundThreadScheduler)
+        .interval(
+            0,
+            1,
+            TimeUnit.SECONDS,
+            rxSchedulers.backgroundThreadScheduler)
         .map { GAME_TURN_DURATION - resumeCorrection - it }
         .takeUntil { it <= 0 }
 
@@ -47,9 +54,11 @@ class NumbersPresenter @Inject constructor(
 
     fun init() {
         if (preferenceStore.isSinglePlayerEnabled) {
-             totalPoints = preferenceStore.singlePlayerPoints
+            view.setGoBack(true)
+            totalPoints = preferenceStore.singlePlayerPoints
             startSinglePlayer()
         } else {
+            view.setGoBack(false)
             this.totalPoints = preferenceStore.gamePoints
             numbersGameInteractor.resetCalculatedNumbers()
             resetCache()
@@ -150,6 +159,8 @@ class NumbersPresenter @Inject constructor(
                 points = hr.fer.edugame.ui.shared.helpers.calculatePoints(wantedNumber, result, opponentResult)
                 totalPoints += points
                 if (totalPoints > POINTS_TO_WIN) {
+                    preferenceStore.multiplayerPoints++
+                    rankInteractor.savePoints(preferenceStore.getUser())
                     preferenceStore.gamePoints = 0
                     numbersGameInteractor.declareWin()
                     view.hideProgress()
